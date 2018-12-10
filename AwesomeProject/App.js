@@ -2,6 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, View, PanResponder, Animated, AsyncStorage, TabBarIOS } from 'react-native';
 import { Divider, Header, Button } from 'react-native-elements';
 import axios from 'axios';
+import TabIndex from './components/TabIndex';
+import ColorPicker from './components/ColorPicker';
 
 export default class App extends React.Component {
   state = {
@@ -9,7 +11,7 @@ export default class App extends React.Component {
     pan: new Animated.ValueXY(),
     hex: '',
     colorArr: [],
-    selectedTab: ''
+    selectedTab: 'tab1'
   }
 
   componentWillMount(){
@@ -47,6 +49,9 @@ export default class App extends React.Component {
   }
 
   getRandomColor = () => {
+    if (this.state.toggle === false){
+      this.setState({toggle: true})
+    }
     var letters = '0123456789ABCDEF';
     var color = '#';
     for (var i = 0; i < 6; i++) {
@@ -75,17 +80,29 @@ export default class App extends React.Component {
              this.setState({colorArr: json})
            })
            .catch(error => console.log('error!'))
-       .done();
+           .done();
   }
 
   changeTabs = (tabId) => {
-      this.setState({
-        selectedTab: tabId
-      })
+    this.setState({
+      selectedTab: tabId
+    })
+  }
+
+  _renderColorPicker = () => {
+    return(
+        <ColorPicker
+          colorArr = {this.state.colorArr}
+          saveColor = {this.saveColor}
+          showColor = {this.showColor}
+          getRandomColor = {this.getRandomColor}
+          toggle = {this.state.toggle}
+          hex = {this.state.hex}
+          />
+    )
   }
 
   render() {
-    let {hex} = this.state
     const panStyle = {
       transform: this.state.pan.getTranslateTransform()
     }
@@ -98,71 +115,12 @@ export default class App extends React.Component {
           rightComponent={{ icon: 'home', color: '#fff' }}
           />
       </View>
-      <View style={[styles.container, this.state.toggle && {'backgroundColor': hex}]} >
-        {/*<Animated.View
-            {...this.panResponder.panHandlers}
-            style={[panStyle, styles.circle]}
-          />*/}
-        <Button onPress={()=> {
-            this.setState({toggle: true})
-            this.getRandomColor()
-        }}
-        title='Change!'/>
-        <Button onPress={()=> this.saveColor()} title='Save This Color'/>
-        <Button onPress={()=> this.showColor()} title='Show Last Saved'/>
-        <Divider style={{ backgroundColor: 'blue' }} />
-        <Text>
-          {this.state.colorArr}
-        </Text>
-      </View>
-      <TabBarIOS>
-        <TabBarIOS.Item
-          selected={this.state.selectedTab === 'tab1'}
-          systemIcon='top-rated'
-          onPress={() => this.changeTabs('tab1')}
-          >
-          <View>
-            <Text>Tab 1</Text>
-          </View>
-        </TabBarIOS.Item>
-        <TabBarIOS.Item
-          selected={this.state.selectedTab === 'tab2'}
-          systemIcon='top-rated'
-          onPress={() => this.changeTabs('tab2')}
-          >
-          <View>
-            <Text>Tab 2</Text>
-          </View>
-        </TabBarIOS.Item>
-        <TabBarIOS.Item
-          selected={this.state.selectedTab === 'tab3'}
-          systemIcon='top-rated'
-          onPress={() => this.changeTabs('tab3')}
-          >
-          <View>
-            <Text>Tab 3</Text>
-          </View>
-        </TabBarIOS.Item>
-      </TabBarIOS>
+      <TabIndex
+        changeTabs = {(item) => this.changeTabs(item)}
+        selectedTab = {this.state.selectedTab}
+        _renderColorPicker = {() => this._renderColorPicker()}
+        />
     </React.Fragment>
     );
   }
 }
-
-let CIRCLE_RADIUS = 30;
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  circle: {
-    backgroundColor: "skyblue",
-    width: CIRCLE_RADIUS * 2,
-    height: CIRCLE_RADIUS * 2,
-    borderRadius: CIRCLE_RADIUS
-  }
-  // altColor: {
-  //   backgroundColor: getRandomColor()
-  // },
-});
