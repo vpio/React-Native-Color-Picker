@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, PanResponder, Animated, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View, PanResponder, Animated, AsyncStorage, TabBarIOS } from 'react-native';
 import { Divider, Header, Button } from 'react-native-elements';
 import axios from 'axios';
 
@@ -8,7 +8,8 @@ export default class App extends React.Component {
     toggle: false,
     pan: new Animated.ValueXY(),
     hex: '',
-    colorArr: []
+    colorArr: [],
+    selectedTab: ''
   }
 
   componentWillMount(){
@@ -77,6 +78,12 @@ export default class App extends React.Component {
        .done();
   }
 
+  changeTabs = (tabId) => {
+      this.setState({
+        selectedTab: tabId
+      })
+  }
+
   render() {
     let {hex} = this.state
     const panStyle = {
@@ -108,6 +115,35 @@ export default class App extends React.Component {
           {this.state.colorArr}
         </Text>
       </View>
+      <TabBarIOS>
+        <TabBarIOS.Item
+          selected={this.state.selectedTab === 'tab1'}
+          systemIcon='top-rated'
+          onPress={() => this.changeTabs('tab1')}
+          >
+          <View>
+            <Text>Tab 1</Text>
+          </View>
+        </TabBarIOS.Item>
+        <TabBarIOS.Item
+          selected={this.state.selectedTab === 'tab2'}
+          systemIcon='top-rated'
+          onPress={() => this.changeTabs('tab2')}
+          >
+          <View>
+            <Text>Tab 2</Text>
+          </View>
+        </TabBarIOS.Item>
+        <TabBarIOS.Item
+          selected={this.state.selectedTab === 'tab3'}
+          systemIcon='top-rated'
+          onPress={() => this.changeTabs('tab3')}
+          >
+          <View>
+            <Text>Tab 3</Text>
+          </View>
+        </TabBarIOS.Item>
+      </TabBarIOS>
     </React.Fragment>
     );
   }

@@ -12,7 +12,10 @@
     "http-proxy-middleware": "^0.19.1",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
-    "react-native-elements": "^1.0.0-beta7"
+    "react-native-elements": "^1.0.0-beta7",
+    "react-native-material-bottom-navigation": "^1.0.2",
+    "react-native-paper": "^2.2.8",
+    "react-navigation-material-bottom-tabs": "^1.0.0"
   },
   "devDependencies": {
     "babel-preset-expo": "^5.0.0"
