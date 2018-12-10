@@ -4,6 +4,7 @@ import { Divider, Header, Button } from 'react-native-elements';
 import axios from 'axios';
 import TabIndex from './components/TabIndex';
 import ColorPicker from './components/ColorPicker';
+import SavedColors from './components/SavedColors';
 
 export default class App extends React.Component {
   state = {
@@ -12,6 +13,10 @@ export default class App extends React.Component {
     hex: '',
     colorArr: [],
     selectedTab: 'tab1'
+  }
+
+  componentDidMount(){
+    this.showColor()
   }
 
   componentWillMount(){
@@ -102,6 +107,14 @@ export default class App extends React.Component {
     )
   }
 
+  _renderSavedColors = () => {
+    return(
+      <SavedColors
+        savedColors = {this.state.colorArr}
+        />
+    )
+  }
+
   render() {
     const panStyle = {
       transform: this.state.pan.getTranslateTransform()
@@ -119,6 +132,7 @@ export default class App extends React.Component {
         changeTabs = {(item) => this.changeTabs(item)}
         selectedTab = {this.state.selectedTab}
         _renderColorPicker = {() => this._renderColorPicker()}
+        _renderSavedColors = {() => this._renderSavedColors()}
         />
     </React.Fragment>
     );
