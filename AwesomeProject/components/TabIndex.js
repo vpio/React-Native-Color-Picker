@@ -9,9 +9,7 @@ const TabIndex = props => {
         systemIcon='top-rated'
         onPress={() => props.changeTabs('tab1')}
         >
-        <View>
-          <Text>Tab 1</Text>
-        </View>
+        {props._renderColorPicker()}
       </TabBarIOS.Item>
       <TabBarIOS.Item
         selected={props.selectedTab === 'tab2'}
