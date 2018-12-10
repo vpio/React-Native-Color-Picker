@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, PanResponder, Animated, AsyncStorage, TabBarIOS } from 'react-native';
 import { Divider, Header, Button } from 'react-native-elements';
 import axios from 'axios';
+import TabIndex from './components/TabIndex';
 
 export default class App extends React.Component {
   state = {
@@ -79,6 +80,7 @@ export default class App extends React.Component {
   }
 
   changeTabs = (tabId) => {
+    console.log("yo please ********", tabId)
       this.setState({
         selectedTab: tabId
       })
@@ -115,35 +117,10 @@ export default class App extends React.Component {
           {this.state.colorArr}
         </Text>
       </View>
-      <TabBarIOS>
-        <TabBarIOS.Item
-          selected={this.state.selectedTab === 'tab1'}
-          systemIcon='top-rated'
-          onPress={() => this.changeTabs('tab1')}
-          >
-          <View>
-            <Text>Tab 1</Text>
-          </View>
-        </TabBarIOS.Item>
-        <TabBarIOS.Item
-          selected={this.state.selectedTab === 'tab2'}
-          systemIcon='top-rated'
-          onPress={() => this.changeTabs('tab2')}
-          >
-          <View>
-            <Text>Tab 2</Text>
-          </View>
-        </TabBarIOS.Item>
-        <TabBarIOS.Item
-          selected={this.state.selectedTab === 'tab3'}
-          systemIcon='top-rated'
-          onPress={() => this.changeTabs('tab3')}
-          >
-          <View>
-            <Text>Tab 3</Text>
-          </View>
-        </TabBarIOS.Item>
-      </TabBarIOS>
+      <TabIndex
+        changeTabs = {(item) => this.changeTabs(item)}
+        selectedTab = {this.state.selectedTab}
+        />
     </React.Fragment>
     );
   }
