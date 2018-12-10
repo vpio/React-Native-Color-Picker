@@ -10,11 +10,7 @@ const ColorPicker = props => {
       }}
       title='Change!'/>
       <Button onPress={()=> props.saveColor()} title='Save This Color'/>
-      <Button onPress={()=> props.showColor()} title='Show Last Saved'/>
       <Divider style={{ backgroundColor: 'blue' }} />
-      <Text>
-        {props.colorArr}
-      </Text>
     </View>
   )
 }
