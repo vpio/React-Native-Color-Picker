@@ -15,7 +15,6 @@
     "react-native-elements": "^1.0.0-beta7",
     "react-native-material-bottom-navigation": "^1.0.2",
     "react-native-paper": "^2.2.8",
-    "react-native-swipeable": "^0.6.0",
     "react-navigation-material-bottom-tabs": "^1.0.0"
   },
   "devDependencies": {

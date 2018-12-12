@@ -69,30 +69,13 @@ export default class App extends React.Component {
 
   saveColor = () => {
     let {hex} = this.state
-    // uncomment this if saved data gets deleted in order to set an initial value
-    // AsyncStorage.setItem("myKey", hex)
     let {colorArr} = this.state
     let addedColor = this.state.colorArr.concat(hex)
-    console.log(addedColor)
     this.setState({colorArr: addedColor})
     AsyncStorage.setItem("myKey", JSON.stringify(colorArr))
         // this.setState({"myKey": hex});
     // console.log("hi")
     // axios.post('http://localhost:3001/api/v1/colors.json', {color: {hex_code: hex}})
-  }
-
-  deleteColor = (hex) => {
-    console.log("here is the hex that got transmitted: ", hex)
-    let {colorArr} = this.state
-    console.log("Array that it is getting removed from: ", colorArr)
-    let index = this.state.colorArr.indexOf(`#${hex}`)
-    console.log("this is the index of that hex: ", index)
-    let deletedColor = colorArr.splice(index, 1)
-    console.log("deleting this color: ", deletedColor)
-
-    AsyncStorage.setItem("myKey", JSON.stringify(colorArr))
-    this.setState({colorArr})
-
   }
 
   showColor = () => {
@@ -128,7 +111,6 @@ export default class App extends React.Component {
     return(
       <SavedColors
         savedColors = {this.state.colorArr}
-        deleteColor = {this.deleteColor}
         />
     )
   }
