@@ -142,7 +142,7 @@ export default class App extends React.Component {
       <View>
         <Header
           leftComponent={{ icon: 'menu', color: '#fff' }}
-          centerComponent={{ text: `Pio's Dope app`, style: { color: '#fff' } }}
+          centerComponent={{ text: `Palette Picker`, style: { color: '#fff' } }}
           rightComponent={{ icon: 'home', color: '#fff' }}
           />
       </View>
