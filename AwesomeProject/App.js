@@ -10,7 +10,7 @@ export default class App extends React.Component {
   state = {
     toggle: false,
     pan: new Animated.ValueXY(),
-    hex: '',
+    hex: '#ffffff',
     colorArr: [],
     selectedTab: 'tab1'
   }

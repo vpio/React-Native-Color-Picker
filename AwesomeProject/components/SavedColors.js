@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
 
 const SavedColors = props => {
   console.log(props.savedColors)
+  if (props.savedColors.length > 0){
   return (
     <ScrollView>
         {
@@ -48,7 +49,14 @@ const SavedColors = props => {
           })
         }
     </ScrollView>
-  )
+  )}
+  else {
+    return (
+      <View>
+        <Text>Aint no colors here</Text>
+      </View>
+    )
+  }
 }
 
 export default SavedColors;
