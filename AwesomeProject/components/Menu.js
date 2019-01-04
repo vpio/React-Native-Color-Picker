@@ -22,7 +22,7 @@ class Menu extends React.Component {
     return(
       <ScrollView>
       <TouchableHighlight onPress={() => this._handleNextPress(nextRoute)}>
-        <Text style={{marginTop: 200, alignSelf: 'center'}}>
+        <Text style={/*styles.cell*/ {marginTop: 200, alignSelf: 'center'}}>
           Log in boi {this.props.myProp}!
         </Text>
       </TouchableHighlight>
