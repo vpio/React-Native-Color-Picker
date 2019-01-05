@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { NavigatorIOS, Text, TouchableHighlight, ScrollView } from 'react-native';
+import { NavigatorIOS, Text, TouchableHighlight, ScrollView, StyleSheet, View } from 'react-native';
 import Sample from './Sample.js'
 
 
@@ -22,13 +22,25 @@ class Menu extends React.Component {
     return(
       <ScrollView>
       <TouchableHighlight onPress={() => this._handleNextPress(nextRoute)}>
-        <Text style={/*styles.cell*/ {marginTop: 200, alignSelf: 'center'}}>
-          Log in boi {this.props.myProp}!
-        </Text>
+        <View style={styles.cell}>
+          <Text style={{/*{marginTop: 200, alignSelf: 'center'}*/}}>
+            Log in boi {this.props.myProp}!
+          </Text>
+        </View>
       </TouchableHighlight>
       </ScrollView>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  cell: {
+    borderBottomWidth: 1,
+    borderBottomColor: 'grey',
+    paddingTop: 20,
+    paddingBottom: 20,
+    alignItems: 'center'
+  }
+})
 
 export default Menu;
