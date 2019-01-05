@@ -17,14 +17,14 @@ class Menu extends React.Component {
   render() {
     const nextRoute = {
       component: Sample,
-      title: 'Bar That',
+      title: 'This is the login page',
     };
     return(
       <ScrollView>
       <TouchableHighlight onPress={() => this._handleNextPress(nextRoute)}>
         <View style={styles.cell}>
           <Text style={{/*{marginTop: 200, alignSelf: 'center'}*/}}>
-            Log in boi {this.props.myProp}!
+            Log in boi!
           </Text>
         </View>
       </TouchableHighlight>
