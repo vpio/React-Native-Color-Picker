@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, PanResponder, Animated, AsyncStorage, TabBarIOS } from 'react-native';
+import { StyleSheet, Text, View, PanResponder, Animated, AsyncStorage, TabBarIOS, NavigatorIOS } from 'react-native';
 import { Divider, Header, Button } from 'react-native-elements';
 import axios from 'axios';
 import TabIndex from './components/TabIndex';
 import ColorPicker from './components/ColorPicker';
 import SavedColors from './components/SavedColors';
+import Menu from './components/Menu';
 
 export default class App extends React.Component {
   state = {
@@ -133,6 +134,18 @@ export default class App extends React.Component {
     )
   }
 
+  _renderMenu = () => {
+    return(
+      <NavigatorIOS
+      initialRoute={{
+           component: Menu,
+           title: 'Menu',
+         }}
+         style={{flex: 1}}
+      />
+    )
+  }
+
   render() {
     const panStyle = {
       transform: this.state.pan.getTranslateTransform()
@@ -141,9 +154,7 @@ export default class App extends React.Component {
       <React.Fragment>
       <View>
         <Header
-          leftComponent={{ icon: 'menu', color: '#fff' }}
           centerComponent={{ text: `Palette Picker`, style: { color: '#fff' } }}
-          rightComponent={{ icon: 'home', color: '#fff' }}
           />
       </View>
       <TabIndex
@@ -151,6 +162,7 @@ export default class App extends React.Component {
         selectedTab = {this.state.selectedTab}
         _renderColorPicker = {() => this._renderColorPicker()}
         _renderSavedColors = {() => this._renderSavedColors()}
+        _renderMenu = {() => this._renderMenu()}
         />
     </React.Fragment>
     );
