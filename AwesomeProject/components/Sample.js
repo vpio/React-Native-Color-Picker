@@ -5,6 +5,9 @@ const Sample = props => {
   return (
     <View>
       <Text>hey</Text>
+      <Text>hey</Text>
+      <Text>hey</Text>
+      <Text>hey</Text>
     </View>
   )
 }
