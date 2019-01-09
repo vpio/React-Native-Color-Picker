@@ -1,19 +1,43 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
 
 class Sample extends Component{
   state = {
-    text: "Nobody"
+    email: "Email: ",
+    password: "Password: "
+  }
+
+  handleSubmit = () => {
+    fetch("/users", {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: this.state.email,
+        password: this.state.password,
+      })
+    })
   }
 
   render(){
-    const {text} = this.state
+    const {email, password} = this.state
     return (
       <View style = {styles.container}>
         <TextInput
           style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-          onChangeText={(text) => this.setState({text})}
-          value={text}/>
+          onChangeText={(email) => this.setState({email})}
+          value={email}/>
+        <TextInput
+          style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+          onChangeText={(password) => this.setState({password})}
+          value={password}/>
+        <Button
+          onPress={() => {this.handleSubmit()}}
+          title="submit"
+
+          />
       </View>
     )
   }
