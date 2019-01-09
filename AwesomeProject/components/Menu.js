@@ -6,6 +6,9 @@ import Sample from './Sample.js'
 
 
 class Menu extends React.Component {
+  state = {
+    userName: ''
+  }
   _handleBackPress() {
     this.props.navigator.pop();
   }
@@ -18,6 +21,9 @@ class Menu extends React.Component {
     const nextRoute = {
       component: Sample,
       title: 'This is the login page',
+      passProps: {
+        userName: this.state.userName,
+       }
     };
     return(
       <ScrollView>
