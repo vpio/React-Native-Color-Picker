@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
+import axios from 'axios';
 
 class Sample extends Component{
   state = {
@@ -8,17 +9,26 @@ class Sample extends Component{
   }
 
   handleSubmit = () => {
-    fetch("/users", {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: this.state.email,
-        password: this.state.password,
-      })
+    // axios.get('http://localhost:3000/users').then((response) => {
+    //   console.log(response.data)
+    // })
+
+    axios.post('http://localhost:3000/users', {
+      email: this.state.email,
+      password: this.state.password
     })
+
+    // fetch("/users", {
+    //   method: 'POST',
+    //   headers: {
+    //     'Accept': 'application/json',
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     email: this.state.email,
+    //     password: this.state.password,
+    //   })
+    // })
   }
 
   render(){
