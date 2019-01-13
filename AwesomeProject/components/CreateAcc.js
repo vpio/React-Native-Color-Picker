@@ -13,7 +13,7 @@ class CreateAcc extends Component{
     //   console.log(response.data)
     // })
 
-    axios.post('http://localhost:3000/users', {
+    axios.post('http://localhost:3000/api/v1/users', {
       email: this.state.email,
       password: this.state.password
     })
@@ -32,6 +32,7 @@ class CreateAcc extends Component{
         <Text>Password:</Text>
         <TextInput
           style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+          autoCapitalize={'none'}
           onChangeText={(password) => this.setState({password})}
           value={password}/>
         <Button

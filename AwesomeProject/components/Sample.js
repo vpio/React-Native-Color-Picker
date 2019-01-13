@@ -9,14 +9,18 @@ class Sample extends Component{
   }
 
   handleSubmit = () => {
-    // axios.get('http://localhost:3000/users').then((response) => {
-    //   console.log(response.data)
-    // })
+    console.log("got the right end point")
 
-    axios.post('http://localhost:3000/users', {
+    axios.post('http://localhost:3000/api/v1/sessions', {
       email: this.state.email,
       password: this.state.password
     })
+
+    axios.get('http://localhost:3000/api/v1/users/')
+    .then((response) => {
+      console.log(response)
+    })
+    .catch((e) => { console.log(e) } )
   }
 
   render(){
@@ -32,6 +36,7 @@ class Sample extends Component{
         <Text>Password:</Text>
         <TextInput
           style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+          autoCapitalize={'none'}
           onChangeText={(password) => this.setState({password})}
           value={password}/>
         <Button
