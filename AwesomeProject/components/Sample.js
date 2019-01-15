@@ -5,22 +5,32 @@ import axios from 'axios';
 class Sample extends Component{
   state = {
     email: "",
-    password: ""
+    password: "",
+    user_token: "",
   }
 
   handleSubmit = () => {
     console.log("got the right end point")
 
-    axios.post('http://localhost:3000/api/v1/sessions', {
-      email: this.state.email,
-      password: this.state.password
+    axios.post('http://localhost:3000/api/v1/user_token', {
+      auth: {
+        email: this.state.email,
+        password: this.state.password
+      }
     })
-
-    axios.get('http://localhost:3000/api/v1/users/')
     .then((response) => {
-      console.log(response)
+      this.setState({user_token: response.data.jwt })
+      console.log(this.state.user_token)
     })
-    .catch((e) => { console.log(e) } )
+    .catch((e) => { console.log(e) })
+
+    // axios.get('http://localhost:3000/api/v1/auth')
+    // .then((response) => {
+    //   console.log(response)
+    // })
+    // .catch((e) => { console.log(e) } )
+
+
   }
 
   render(){
