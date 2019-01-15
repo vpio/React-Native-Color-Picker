@@ -1,11 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { NavigatorIOS, Text, TouchableHighlight, ScrollView, StyleSheet, View } from 'react-native';
-import Sample from './Sample.js'
+import Sample from './Sample.js';
+import CreateAcc from './CreateAcc.js';
 
 
 
 class Menu extends React.Component {
+  state = {
+    userName: ''
+  }
   _handleBackPress() {
     this.props.navigator.pop();
   }
@@ -14,10 +18,21 @@ class Menu extends React.Component {
     this.props.navigator.push(nextRoute);
   }
 
+// , createAccount: this.
   render() {
     const nextRoute = {
       component: Sample,
-      title: 'This is the login page',
+      title: 'Login',
+      passProps: {
+        userName: this.state.userName, createAcc: () => this._handleNextPress(createAcc)
+       }
+    };
+    const createAcc = {
+      component: CreateAcc,
+      title: 'Sign Up',
+      passProps: {
+        userName: this.state.userName,
+       }
     };
     return(
       <ScrollView>
