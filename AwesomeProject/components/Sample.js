@@ -10,27 +10,30 @@ class Sample extends Component{
   }
 
   handleSubmit = () => {
-    console.log("got the right end point")
+    const {email, password} = this.state
 
-    axios.post('http://localhost:3000/api/v1/user_token', {
-      auth: {
-        email: this.state.email,
-        password: this.state.password
-      }
-    })
-    .then((response) => {
-      this.setState({user_token: response.data.jwt })
-      console.log(this.state.user_token)
-    })
-    .catch((e) => { console.log(e) })
-
+    console.log(email, password)
+    this.props.login(email, password)
+    this.props.navigator.pop();
+    // console.log("got the right end point")
+    //
+    // axios.post('http://localhost:3000/api/v1/user_token', {
+    //   auth: {
+    //     email: this.state.email,
+    //     password: this.state.password
+    //   }
+    // })
+    // .then((response) => {
+    //   this.setState({user_token: response.data.jwt })
+    //   console.log(this.state.user_token)
+    // })
+    // .catch((e) => { console.log(e) })
+    //
     // axios.get('http://localhost:3000/api/v1/auth')
     // .then((response) => {
     //   console.log(response)
     // })
     // .catch((e) => { console.log(e) } )
-
-
   }
 
   render(){

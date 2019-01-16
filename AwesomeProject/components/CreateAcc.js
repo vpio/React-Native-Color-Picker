@@ -10,22 +10,27 @@ class CreateAcc extends Component{
   }
 
   handleSubmit = () => {
+    const {email, password, userName} = this.state
+    // this.props.login(email, password)
     // axios.get('http://localhost:3000/users').then((response) => {
     //   console.log(response.data)
     // })
-    console.log(this.state.password)
+    console.log(email, password, userName)
 
-    axios.post('http://localhost:3000/api/v1/users/create', {
+    axios.post('http://192.168.7.228:3000/api/v1/users/create', {
       user: {
-        email: this.state.email,
-        password: this.state.password,
-        username: this.state.userName
+        email: email,
+        password: password,
+        username: userName
       }
     })
-    .then(function (response) {
+    .then((response) => {
+      // console.log("yo", this.props)
+     this.props.login(email, password)
+     this.props.navigator.popToTop();
      console.log(response);
    })
-   .catch(function (error) {
+   .catch((error) => {
      console.log(error);
    });
   }
