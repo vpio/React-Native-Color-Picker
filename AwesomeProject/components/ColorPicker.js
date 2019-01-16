@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, PanResponder, Animated, AsyncStorage, TabBarIOS } from 'react-native';
+import { StyleSheet, Text, View, PanResponder, Animated, AsyncStorage, TabBarIOS, Modal, TouchableHighlight } from 'react-native';
 import { Divider, Header, Button } from 'react-native-elements';
 
 const ColorPicker = props => {
