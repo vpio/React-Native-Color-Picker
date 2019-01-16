@@ -13,7 +13,10 @@ export default class App extends React.Component {
     pan: new Animated.ValueXY(),
     hex: '#ffffff',
     colorArr: [],
-    selectedTab: 'tab1'
+    selectedTab: 'tab1',
+    loggedIn: false,
+    user: {},
+    user_token: ''
   }
 
   componentDidMount(){
@@ -30,28 +33,69 @@ export default class App extends React.Component {
           })
           .catch(error => console.log("hello please work **********", error))
 
-    this._val = { x:0, y:0 }
-    this.state.pan.addListener((value) => this._val = value);
+    // this._val = { x:0, y:0 }
+    // this.state.pan.addListener((value) => this._val = value);
+    //
+    // this.panResponder = PanResponder.create({
+    //   onStartShouldSetPanResponder: (e, gesture) => true,
+    //   onPanResponderMove: Animated.event([
+    //     null, { dx: this.state.pan.x, dy: this.state.pan.y }
+    //   ]),
+    //   onPanResponderGrant: (e, gestureState) => {
+    //     // Set the initial value to the current state
+    //     this.state.pan.setOffset({x: this.state.pan.x._value, y: this.state.pan.y._value});
+    //     this.state.pan.setValue({x: 0, y: 0});
+    //   },
+    //   onPanResponderRelease: (e, gesture) => {
+    //      // this.state.pan.flattenOffset();
+    //    Animated.spring(this.state.pan, {
+    //      toValue: { x: 0, y: 0 },
+    //      friction: 5
+    //    }).start();
+    //  }
+    // });
+    // this.state.pan.setValue({ x:0, y:0})
 
-    this.panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: (e, gesture) => true,
-      onPanResponderMove: Animated.event([
-        null, { dx: this.state.pan.x, dy: this.state.pan.y }
-      ]),
-      onPanResponderGrant: (e, gestureState) => {
-        // Set the initial value to the current state
-        this.state.pan.setOffset({x: this.state.pan.x._value, y: this.state.pan.y._value});
-        this.state.pan.setValue({x: 0, y: 0});
-      },
-      onPanResponderRelease: (e, gesture) => {
-         // this.state.pan.flattenOffset();
-       Animated.spring(this.state.pan, {
-         toValue: { x: 0, y: 0 },
-         friction: 5
-       }).start();
-     }
-    });
-    this.state.pan.setValue({ x:0, y:0})
+    AsyncStorage.getItem("myToken")
+           .then((value) => {
+             if (value) {
+               console.log("intercepted")
+               this.setState({
+                 user_token: value,
+                 loggedIn: true
+                })
+                axios.get('http://192.168.7.228:3000/api/v1/users/current', {
+                  headers: {
+                    "Authorization": `Bearer ${this.state.user_token}`,
+                    "Content-Type": `application/json`
+                  }
+                })
+                .then((response) => {
+                  console.log("option 1")
+                  this.setState({
+                    user: response.data ,
+                  })
+                })
+                .catch((e) => { console.log(e.message) } )
+               console.log(this.state.user_token)
+             }
+           })
+           .catch(error => console.log('error!'))
+           .done();
+  // If the user has a token, send the following request to get their info
+    if (this.state.user_token){
+      console.log('doing this')
+      axios.get('http://192.168.7.228:3000/api/v1/users/current', {
+        headers: {
+          "Authorization": `Bearer ${this.state.user_token}`,
+          "Content-Type": `application/json`
+        }
+      })
+      .then((response) => {
+        console.log("option 2")
+        console.log("current user", response) })
+      .catch((e) => { console.log(e) } )
+    }
   }
 
   getRandomColor = () => {
@@ -112,6 +156,48 @@ export default class App extends React.Component {
     })
   }
 
+  handleSubmit = (email, password) => {
+    console.log("got the right end point", email)
+
+    axios.post('http://192.168.7.228:3000/api/v1/user_token', {
+      auth: {
+        "email": email,
+        "password": password
+      }
+    })
+    .then((response) => {
+      this.setState({user_token: response.data.jwt })
+      console.log("user token", response.data.jwt)
+
+      axios.get('http://192.168.7.228:3000/api/v1/users/current', {
+        headers: {
+          "Authorization": `Bearer ${this.state.user_token}`,
+          "Content-Type": `application/json`
+        }
+      })
+      .then((response) => {
+        this.setState({
+          user: response.data ,
+          loggedIn: true
+        })
+        AsyncStorage.setItem("myToken", this.state.user_token)
+        console.log(response.data)
+      })
+      .catch((e) => { console.log(e.message) } )
+    })
+    .catch((e) => { console.log(e) })
+  }
+
+  handleLogOut = () => {
+
+      this.setState({
+        loggedIn: false,
+        user_token: ''
+      })
+
+    AsyncStorage.setItem("myToken", '')
+  }
+
   _renderColorPicker = () => {
     return(
         <ColorPicker
@@ -137,9 +223,16 @@ export default class App extends React.Component {
   _renderMenu = () => {
     return(
       <NavigatorIOS
+      translucent={ false }
       initialRoute={{
            component: Menu,
            title: 'Menu',
+           passProps: {
+             login: this.handleSubmit,
+             user: this.state.user,
+             loggedIn: this.state.loggedIn,
+             logOut: this.handleLogOut
+           }
          }}
          style={{flex: 1}}
       />
@@ -150,21 +243,34 @@ export default class App extends React.Component {
     const panStyle = {
       transform: this.state.pan.getTranslateTransform()
     }
-    return (
-      <React.Fragment>
-      <View>
-        <Header
-          centerComponent={{ text: `Palette Picker`, style: { color: '#fff' } }}
+    const {loggedIn, user} = this.state
+
+    if (!loggedIn){
+      return (
+        <React.Fragment>
+          {this._renderMenu()}
+        </React.Fragment>
+      )
+    }
+    else {
+      console.log("user info: ", user)
+      return (
+        <React.Fragment>
+        <View>
+          <Header
+            centerComponent={{ text: `Palette Picker`, style: { color: '#fff' } }}
+            />
+        </View>
+        <TabIndex
+          changeTabs = {(item) => this.changeTabs(item)}
+          selectedTab = {this.state.selectedTab}
+          _renderColorPicker = {() => this._renderColorPicker()}
+          _renderSavedColors = {() => this._renderSavedColors()}
+          _renderMenu = {() => this._renderMenu()}
           />
-      </View>
-      <TabIndex
-        changeTabs = {(item) => this.changeTabs(item)}
-        selectedTab = {this.state.selectedTab}
-        _renderColorPicker = {() => this._renderColorPicker()}
-        _renderSavedColors = {() => this._renderSavedColors()}
-        _renderMenu = {() => this._renderMenu()}
-        />
-    </React.Fragment>
-    );
+      </React.Fragment>
+      );
+    }
+
   }
 }

@@ -8,95 +8,6 @@ import axios from 'axios';
 
 
 class Menu extends React.Component {
-  state = {
-    userName: '',
-    user_token: '',
-    user: {},
-    loggedIn: false
-  }
-
-  handleLogOut = () => {
-
-      this.setState({
-        loggedIn: false,
-        user_token: ''
-      })
-
-    AsyncStorage.setItem("myToken", '')
-  }
-
-  handleSubmit = (email, password) => {
-    console.log("got the right end point", email)
-
-    axios.post('http://192.168.7.228:3000/api/v1/user_token', {
-      auth: {
-        "email": email,
-        "password": password
-      }
-    })
-    .then((response) => {
-      this.setState({user_token: response.data.jwt })
-      console.log("user token", response.data.jwt)
-
-      axios.get('http://192.168.7.228:3000/api/v1/auth', {
-        headers: {
-          "Authorization": `Bearer ${this.state.user_token}`,
-          "Content-Type": `application/json`
-        }
-      })
-      .then((response) => {
-        this.setState({
-          user: response.data ,
-          loggedIn: true
-        })
-        AsyncStorage.setItem("myToken", this.state.user_token)
-        console.log(response.data)
-      })
-      .catch((e) => { console.log(e.message) } )
-    })
-    .catch((e) => { console.log(e) })
-  }
-
-  componentDidMount(){
-    console.log("test")
-    AsyncStorage.getItem("myToken")
-           .then((value) => {
-             if (value) {
-               console.log("intercepted")
-               this.setState({
-                 user_token: value,
-                 loggedIn: true
-                })
-                axios.get('http://192.168.7.228:3000/api/v1/auth', {
-                  headers: {
-                    "Authorization": `Bearer ${this.state.user_token}`,
-                    "Content-Type": `application/json`
-                  }
-                })
-                .then((response) => {
-                  this.setState({
-                    user: response.data ,
-                  })
-                })
-                .catch((e) => { console.log(e.message) } )
-               console.log(this.state.user_token)
-             }
-           })
-           .catch(error => console.log('error!'))
-           .done();
-  // If the user has a token, send the following request to get their info
-    if (this.state.user_token){
-      axios.get('/users/current', {
-        headers: {
-          "Authorization": `Bearer ${this.state.user_token}`,
-          "Content-Type": `application/json`
-        }
-      })
-      .then((response) => { console.log(response) })
-      .catch((e) => { console.log(e) } )
-    }
-
-  }
 
   _handleBackPress() {
     this.props.navigator.pop();
@@ -106,24 +17,24 @@ class Menu extends React.Component {
     this.props.navigator.push(nextRoute);
   }
 
-// , createAccount: this.
+
   render() {
-    const {loggedIn, user} = this.state
+    const {loggedIn, user} = this.props
     const nextRoute = {
       component: Sample,
       title: 'Login',
       passProps: {
-        userName: this.state.userName,
+        userName: this.props.user.username,
         createAcc: () => this._handleNextPress(createAcc),
-        login: this.handleSubmit
+        login: this.props.login
        }
     };
     const createAcc = {
       component: CreateAcc,
       title: 'Sign Up',
       passProps: {
-        userName: this.state.userName,
-        login: this.handleSubmit
+        userName: this.props.user.username,
+        login: this.props.login
        }
     };
 
@@ -132,7 +43,7 @@ class Menu extends React.Component {
         <View style={styles.container}>
           <Text>{user.msg}</Text>
             <Button
-              onPress={() => {this.handleLogOut()}}
+              onPress={() => {this.props.logOut()}}
               title="Log Out"
               />
         </View>
@@ -163,7 +74,8 @@ const styles = StyleSheet.create({
     marginTop: 200,
     paddingTop: 20,
     paddingBottom: 20,
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: 'orange',
   },
   container: {
     flex: 1,
