@@ -1,11 +1,22 @@
 import React from 'react';
-import { StyleSheet, Text, View, PanResponder, Animated, AsyncStorage, TabBarIOS, NavigatorIOS } from 'react-native';
 import { Divider, Header, Button } from 'react-native-elements';
 import axios from 'axios';
 import TabIndex from './components/TabIndex';
 import ColorPicker from './components/ColorPicker';
 import SavedColors from './components/SavedColors';
 import Menu from './components/Menu';
+import {
+  StyleSheet,
+  Text,
+  View,
+  PanResponder,
+  Animated,
+  AsyncStorage,
+  TabBarIOS,
+  NavigatorIOS,
+  Modal,
+  TouchableHighlight
+} from 'react-native';
 
 export default class App extends React.Component {
   state = {
@@ -16,7 +27,8 @@ export default class App extends React.Component {
     selectedTab: 'tab1',
     loggedIn: false,
     user: {},
-    user_token: ''
+    user_token: '',
+    modalVisible: false
   }
 
   componentDidMount(){
@@ -166,7 +178,10 @@ export default class App extends React.Component {
       }
     })
     .then((response) => {
-      this.setState({user_token: response.data.jwt })
+      this.setState({
+        user_token: response.data.jwt,
+        selectedTab: 'tab1'
+       })
       console.log("user token", response.data.jwt)
 
       axios.get('http://192.168.7.228:3000/api/v1/users/current', {
@@ -178,7 +193,8 @@ export default class App extends React.Component {
       .then((response) => {
         this.setState({
           user: response.data ,
-          loggedIn: true
+          loggedIn: true,
+          modalVisible: true
         })
         AsyncStorage.setItem("myToken", this.state.user_token)
         console.log(response.data)
@@ -198,6 +214,10 @@ export default class App extends React.Component {
     AsyncStorage.setItem("myToken", '')
   }
 
+  toggleModal = () => {
+    this.setState({ modalVisible: !this.state.modalVisible})
+  }
+
   _renderColorPicker = () => {
     return(
         <ColorPicker
@@ -207,6 +227,8 @@ export default class App extends React.Component {
           getRandomColor = {this.getRandomColor}
           toggle = {this.state.toggle}
           hex = {this.state.hex}
+          modalVisible={this.state.modalVisible}
+          toggleModal={this.toggleModal}
           />
     )
   }
@@ -243,7 +265,7 @@ export default class App extends React.Component {
     const panStyle = {
       transform: this.state.pan.getTranslateTransform()
     }
-    const {loggedIn, user} = this.state
+    const {loggedIn, user, modalVisible} = this.state
 
     if (!loggedIn){
       return (

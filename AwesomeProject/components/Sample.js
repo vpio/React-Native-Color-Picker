@@ -14,7 +14,7 @@ class Sample extends Component{
 
     console.log(email, password)
     this.props.login(email, password)
-    this.props.navigator.pop();
+    // this.props.navigator.pop();
     // console.log("got the right end point")
     //
     // axios.post('http://localhost:3000/api/v1/user_token', {
@@ -50,6 +50,7 @@ class Sample extends Component{
         <TextInput
           style={{height: 40, borderColor: 'gray', borderWidth: 1}}
           autoCapitalize={'none'}
+          secureTextEntry={true}
           onChangeText={(password) => this.setState({password})}
           value={password}/>
         <Button

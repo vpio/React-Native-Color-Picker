@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 74950,
   "expoServerNgrokUrl": "https://va-t6p.anonymous.awesomeproject.exp.direct",
   "packagerNgrokUrl": "https://packager.va-t6p.anonymous.awesomeproject.exp.direct",
-  "ngrokPid": 71346
+  "ngrokPid": 74964
 }

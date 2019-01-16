@@ -41,7 +41,7 @@ class Menu extends React.Component {
     if (loggedIn){
       return(
         <View style={styles.container}>
-          <Text>{user.msg}</Text>
+          <Text>{`You are currently Logged-in as ${user.username}`}</Text>
             <Button
               onPress={() => {this.props.logOut()}}
               title="Log Out"
