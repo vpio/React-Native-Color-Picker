@@ -51,7 +51,7 @@ class Menu extends React.Component {
     }
     else {
       return(
-        <ScrollView>
+        <View style={styles.design}>
         <TouchableHighlight onPress={() => this._handleNextPress(nextRoute)}>
           <View style={styles.cell}>
             <Text >
@@ -59,7 +59,7 @@ class Menu extends React.Component {
             </Text>
           </View>
         </TouchableHighlight>
-        </ScrollView>
+        </View>
       );
     }
   }
@@ -81,6 +81,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  design: {
+    backgroundColor: '#32bcfc',
+    height: "100%"
   }
 })
 

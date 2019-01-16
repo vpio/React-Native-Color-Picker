@@ -245,7 +245,8 @@ export default class App extends React.Component {
   _renderMenu = () => {
     return(
       <NavigatorIOS
-      translucent={ false }
+      translucent={ true }
+      navigationBarHidden={true}
       initialRoute={{
            component: Menu,
            title: 'Menu',
