@@ -39,25 +39,35 @@ class CreateAcc extends Component{
     const {email, password, userName} = this.state
     return (
       <View style = {styles.container}>
-        <Text>Username:</Text>
-        <TextInput
-          style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-          autoCapitalize={'none'}
-          onChangeText={(userName) => this.setState({userName})}
-          value={userName}/>
-        <Text>Email:</Text>
-        <TextInput
-          style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-          autoCapitalize={'none'}
-          onChangeText={(email) => this.setState({email})}
-          value={email}/>
-        <Text>Password:</Text>
-        <TextInput
-          style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-          autoCapitalize={'none'}
-          onChangeText={(password) => this.setState({password})}
-          value={password}/>
+        <View style={styles.formContainer}>
+          <Text>Username:</Text>
+          <TextInput
+            style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+            returnKeyType={'next'}
+            autoCapitalize={'none'}
+            onChangeText={(userName) => this.setState({userName})}
+            value={userName}/>
+          <Text>Email:</Text>
+          <TextInput
+            style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+            autoCapitalize={'none'}
+            keyboardType={'email-address'}
+            textContentType={'emailAddress'}
+            onChangeText={(email) => this.setState({email})}
+            value={email}/>
+          <Text>Password:</Text>
+          <TextInput
+            style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+            autoCapitalize={'none'}
+            secureTextEntry={true}
+            textContentType={'password'}
+            onChangeText={(password) => this.setState({password})}
+            value={password}/>
+        </View>
         <Button
+          style={{
+            color: 'red'
+          }}
           onPress={() => {this.handleSubmit()}}
           title="Sign Up"
           />
@@ -68,10 +78,14 @@ class CreateAcc extends Component{
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-
+    // flex: 1,
+    marginTop: 50,
     justifyContent: 'center',
   },
+  formContainer: {
+    width: 300,
+    alignSelf: 'center'
+  }
 });
 
 export default CreateAcc;
