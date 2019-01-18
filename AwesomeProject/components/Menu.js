@@ -1,13 +1,43 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { NavigatorIOS, Text, TouchableHighlight, ScrollView, StyleSheet, View, AsyncStorage, Button } from 'react-native';
+import { NavigatorIOS, TouchableHighlight, ScrollView, StyleSheet, AsyncStorage, YellowBox } from 'react-native';
 import Sample from './Sample.js';
 import CreateAcc from './CreateAcc.js';
 import axios from 'axios';
+import { View, Examples, ImageBackground, Screen, Tile, Overlay, Title, Caption, Button, Text } from '@shoutem/ui';
+import { Font, AppLoading, Haptic } from 'expo';
+
+YellowBox.ignoreWarnings([
+  'Require cycle:',
+]);
 
 
 
 class Menu extends React.Component {
+  state = {
+    fontsAreLoaded: false,
+  };
+
+
+  async componentWillMount() {
+
+      await Font.loadAsync({
+        'Rubik-Black': require('../node_modules/@shoutem/ui/fonts/Rubik-Black.ttf'),
+        'Rubik-BlackItalic': require('../node_modules/@shoutem/ui/fonts/Rubik-BlackItalic.ttf'),
+        'Rubik-Bold': require('../node_modules/@shoutem/ui/fonts/Rubik-Bold.ttf'),
+        'Rubik-BoldItalic': require('../node_modules/@shoutem/ui/fonts/Rubik-BoldItalic.ttf'),
+        'Rubik-Italic': require('../node_modules/@shoutem/ui/fonts/Rubik-Italic.ttf'),
+        'Rubik-Light': require('../node_modules/@shoutem/ui/fonts/Rubik-Light.ttf'),
+        'Rubik-LightItalic': require('../node_modules/@shoutem/ui/fonts/Rubik-LightItalic.ttf'),
+        'Rubik-Medium': require('../node_modules/@shoutem/ui/fonts/Rubik-Medium.ttf'),
+        'Rubik-MediumItalic': require('../node_modules/@shoutem/ui/fonts/Rubik-MediumItalic.ttf'),
+        'Rubik-Regular': require('../node_modules/@shoutem/ui/fonts/Rubik-Regular.ttf'),
+        'rubicon-icon-font': require('../node_modules/@shoutem/ui/fonts/rubicon-icon-font.ttf'),
+      });
+
+      this.setState({ fontsAreLoaded: true });
+
+  }
 
   _handleBackPress() {
     this.props.navigator.pop();
@@ -37,28 +67,60 @@ class Menu extends React.Component {
         login: this.props.login
        }
     };
+    if (!this.state.fontsAreLoaded) {
+      return <AppLoading />;
+    }
 
-    if (loggedIn){
+    else if (loggedIn){
       return(
         <View style={styles.container}>
           <Text>{`You are currently Logged-in as ${user.username}`}</Text>
             <Button
               onPress={() => {this.props.logOut()}}
-              title="Log Out"
-              />
+              >
+              <Text>Log Out</Text>
+            </Button>
         </View>
       )
     }
     else {
       return(
-        <View style={styles.design}>
-        <TouchableHighlight onPress={() => this._handleNextPress(nextRoute)}>
-          <View style={styles.cell}>
-            <Text >
-              Log in boi!
-            </Text>
-          </View>
-        </TouchableHighlight>
+        <View>
+          <ImageBackground
+            styleName="featured"
+            source={ require('../assets/images/6320.jpg') }
+
+            style={{marginTop: 200}}
+            >
+            <View style={styles.container}>
+              <View style={{marginTop: 150}}>
+                <Tile styleName="clear">
+                  <Overlay>
+                    <Title >Color Picker App 2019</Title>
+                    <Caption>Made by Pio M.</Caption>
+                  </Overlay>
+                </Tile>
+              </View>
+              <View style={{marginTop: 200}}styleName="horizontal flexible">
+                <Button
+                  onPress={() => {
+                    this._handleNextPress(nextRoute);
+                    Haptic.impact(Haptic.ImpactFeedbackStyle.Heavy);
+                  }}
+                  styleName="full-width">
+                  <Text>Login</Text>
+                </Button>
+                <Button
+                  onPress={() => {
+                    this._handleNextPress(createAcc)
+                    Haptic.impact(Haptic.ImpactFeedbackStyle.Heavy); 
+                  }}
+                  styleName="full-width">
+                  <Text>Sign Up</Text>
+                </Button>
+              </View>
+            </View>
+          </ImageBackground>
         </View>
       );
     }

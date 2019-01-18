@@ -1,15 +1,31 @@
 import React from 'react';
-import { StyleSheet, Text, View, PanResponder, Animated, AsyncStorage, TabBarIOS, Modal, TouchableHighlight } from 'react-native';
-import { Divider, Header, Button } from 'react-native-elements';
+import { View, StyleSheet, PanResponder, Animated, AsyncStorage, TabBarIOS, Modal, TouchableHighlight } from 'react-native';
+import { Divider, Header } from 'react-native-elements';
+import { Button, Text } from '@shoutem/ui';
+import { Haptic } from 'expo';
 
 const ColorPicker = props => {
   return (
     <View style={[styles.container, props.toggle && {'backgroundColor': props.hex}]}>
-      <Button onPress={()=> {
+      <Button
+        styleName="clear"
+        onPress={()=> {
           props.getRandomColor()
-      }}
-      title='Change!'/>
-      <Button onPress={()=> props.saveColor()} title='Save This Color'/>
+          Haptic.selection()
+        }}
+      >
+        <Text>Change!</Text>
+      </Button>
+
+      <Button
+        onPress={()=> {
+          props.saveColor()
+          Haptic.selection()
+        }}
+        style={{marginTop: 30}}
+        >
+        <Text>Save This Color</Text>
+      </Button>
       <Divider style={{ backgroundColor: 'blue' }} />
     </View>
   )
@@ -25,7 +41,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   circle: {
-    backgroundColor: "skyblue",
+    backgroundColor: "black",
     width: CIRCLE_RADIUS * 2,
     height: CIRCLE_RADIUS * 2,
     borderRadius: CIRCLE_RADIUS
