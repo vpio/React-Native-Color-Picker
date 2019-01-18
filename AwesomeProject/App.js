@@ -5,6 +5,7 @@ import TabIndex from './components/TabIndex';
 import ColorPicker from './components/ColorPicker';
 import SavedColors from './components/SavedColors';
 import Menu from './components/Menu';
+import { Font, AppLoading } from 'expo';
 import {
   StyleSheet,
   Text,
@@ -18,6 +19,7 @@ import {
   TouchableHighlight
 } from 'react-native';
 
+
 export default class App extends React.Component {
   state = {
     toggle: false,
@@ -28,14 +30,29 @@ export default class App extends React.Component {
     loggedIn: false,
     user: {},
     user_token: '',
-    modalVisible: false
+    modalVisible: false,
+    fontsAreLoaded: false
   }
 
-  componentDidMount(){
+
+  async componentWillMount(){
     this.showColor()
-  }
 
-  componentWillMount(){
+    await Font.loadAsync({
+      'Rubik-Black': require('./node_modules/@shoutem/ui/fonts/Rubik-Black.ttf'),
+      'Rubik-BlackItalic': require('./node_modules/@shoutem/ui/fonts/Rubik-BlackItalic.ttf'),
+      'Rubik-Bold': require('./node_modules/@shoutem/ui/fonts/Rubik-Bold.ttf'),
+      'Rubik-BoldItalic': require('./node_modules/@shoutem/ui/fonts/Rubik-BoldItalic.ttf'),
+      'Rubik-Italic': require('./node_modules/@shoutem/ui/fonts/Rubik-Italic.ttf'),
+      'Rubik-Light': require('./node_modules/@shoutem/ui/fonts/Rubik-Light.ttf'),
+      'Rubik-LightItalic': require('./node_modules/@shoutem/ui/fonts/Rubik-LightItalic.ttf'),
+      'Rubik-Medium': require('./node_modules/@shoutem/ui/fonts/Rubik-Medium.ttf'),
+      'Rubik-MediumItalic': require('./node_modules/@shoutem/ui/fonts/Rubik-MediumItalic.ttf'),
+      'Rubik-Regular': require('./node_modules/@shoutem/ui/fonts/Rubik-Regular.ttf'),
+      'rubicon-icon-font': require('./node_modules/@shoutem/ui/fonts/rubicon-icon-font.ttf'),
+    });
+
+    this.setState({ fontsAreLoaded: true });
     axios.get('http://localhost:3001/api/v1/colors.json')
           .then(response => {
               console.log("hello it worked *******", response)
@@ -76,7 +93,7 @@ export default class App extends React.Component {
                  user_token: value,
                  loggedIn: true
                 })
-                axios.get('http://192.168.7.228:3000/api/v1/users/current', {
+                axios.get('http://10.1.10.211:3000/api/v1/users/current', {
                   headers: {
                     "Authorization": `Bearer ${this.state.user_token}`,
                     "Content-Type": `application/json`
@@ -97,7 +114,7 @@ export default class App extends React.Component {
   // If the user has a token, send the following request to get their info
     if (this.state.user_token){
       console.log('doing this')
-      axios.get('http://192.168.7.228:3000/api/v1/users/current', {
+      axios.get('http://10.1.10.211:3000/api/v1/users/current', {
         headers: {
           "Authorization": `Bearer ${this.state.user_token}`,
           "Content-Type": `application/json`
@@ -153,10 +170,15 @@ export default class App extends React.Component {
   }
 
   showColor = () => {
+    console.log("doing what were supposed to here")
     AsyncStorage.getItem("myKey").then((value) =>
            JSON.parse(value))
            .then(json => {
-             this.setState({colorArr: json})
+             console.log("dont be null ", json)
+             if(json !== null){
+               this.setState({colorArr: json})
+             }
+             console.log("what has this become ", this.state.colorArr)
            })
            .catch(error => console.log('error!'))
            .done();
@@ -171,7 +193,7 @@ export default class App extends React.Component {
   handleSubmit = (email, password) => {
     console.log("got the right end point", email)
 
-    axios.post('http://192.168.7.228:3000/api/v1/user_token', {
+    axios.post('http://10.1.10.211:3000/api/v1/user_token', {
       auth: {
         "email": email,
         "password": password
@@ -184,7 +206,7 @@ export default class App extends React.Component {
        })
       console.log("user token", response.data.jwt)
 
-      axios.get('http://192.168.7.228:3000/api/v1/users/current', {
+      axios.get('http://10.1.10.211:3000/api/v1/users/current', {
         headers: {
           "Authorization": `Bearer ${this.state.user_token}`,
           "Content-Type": `application/json`
@@ -234,6 +256,7 @@ export default class App extends React.Component {
   }
 
   _renderSavedColors = () => {
+    console.log("should also be gucci", this.state.colorArr)
     return(
       <SavedColors
         savedColors = {this.state.colorArr}
@@ -242,10 +265,20 @@ export default class App extends React.Component {
     )
   }
 
+  onLogOutMenu = () => {
+    if (this.state.selectedTab === 'tab1' || this.state.selectedTab === 'tab2'){
+      return true
+    }
+    else{
+      return false
+    }
+  }
+
   _renderMenu = () => {
     return(
       <NavigatorIOS
-      translucent={ false }
+      translucent={ true }
+      navigationBarHidden={true}
       initialRoute={{
            component: Menu,
            title: 'Menu',
@@ -253,7 +286,9 @@ export default class App extends React.Component {
              login: this.handleSubmit,
              user: this.state.user,
              loggedIn: this.state.loggedIn,
-             logOut: this.handleLogOut
+             logOut: this.handleLogOut,
+             onTab: this.onLogOutMenu()
+
            }
          }}
          style={{flex: 1}}
@@ -267,7 +302,11 @@ export default class App extends React.Component {
     }
     const {loggedIn, user, modalVisible} = this.state
 
-    if (!loggedIn){
+    if (!this.state.fontsAreLoaded) {
+      return <AppLoading />;
+    }
+
+    else if (!loggedIn){
       return (
         <React.Fragment>
           {this._renderMenu()}
@@ -278,11 +317,6 @@ export default class App extends React.Component {
       console.log("user info: ", user)
       return (
         <React.Fragment>
-        <View>
-          <Header
-            centerComponent={{ text: `Palette Picker`, style: { color: '#fff' } }}
-            />
-        </View>
         <TabIndex
           changeTabs = {(item) => this.changeTabs(item)}
           selectedTab = {this.state.selectedTab}

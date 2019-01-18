@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
+import {  StyleSheet, Keyboard, TouchableWithoutFeedback, Easing, ScrollView } from 'react-native';
 import axios from 'axios';
+import { View, Examples, ImageBackground, Screen, Tile, Overlay, Title, Caption, Button, Text, TextInput } from '@shoutem/ui';
+import { TimingDriver, ZoomIn } from '@shoutem/animation';
+
 
 class Sample extends Component{
   state = {
@@ -38,30 +41,50 @@ class Sample extends Component{
 
   render(){
     const {email, password} = this.state
+    const driver = new TimingDriver({
+      "duration": 400,
+      "easing": Easing.inOut,
+      "delay": 200,
+    });
     return (
-      <View style = {styles.container}>
-        <Text>Email:</Text>
-        <TextInput
-          style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-          autoCapitalize={'none'}
-          onChangeText={(email) => this.setState({email})}
-          value={email}/>
-        <Text>Password:</Text>
-        <TextInput
-          style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-          autoCapitalize={'none'}
-          secureTextEntry={true}
-          onChangeText={(password) => this.setState({password})}
-          value={password}/>
-        <Button
-          onPress={() => {this.handleSubmit()}}
-          title="Log In"
-          />
-        <Button
-          onPress={() => { this.props.createAcc() }}
-          title="Create an Account"
-          />
-      </View>
+
+        <ScrollView
+           style={styles.container}
+           scrollEnabled={false}
+           keyboardShouldPersistTaps="never"
+           >
+          <Text>Email:</Text>
+          <TextInput
+            style={{borderColor: 'gray', borderBottomWidth: 1}}
+            autoCapitalize={'none'}
+            onChangeText={(email) => this.setState({email})}
+            value={email}/>
+
+          <Text>Password:</Text>
+          <TextInput
+            style={{borderColor: 'gray', borderBottomWidth: 1}}
+            autoCapitalize={'none'}
+            secureTextEntry={true}
+            onChangeText={(password) => this.setState({password})}
+            value={password}/>
+          <Button
+            onPress={() => {this.handleSubmit()}}
+            >
+            <Text>Log In</Text>
+          </Button>
+          <Button
+            onPress={() => { this.props.createAcc() }}
+            >
+            <Text>Creat an Account</Text>
+          </Button>
+          <Button
+            onPress={() => { this.props.navigator.pop() }}
+            >
+            <Text>Back</Text>
+          </Button>
+        </ScrollView>
+
+
     )
   }
 }
@@ -69,8 +92,10 @@ class Sample extends Component{
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
-    justifyContent: 'center',
+    paddingTop: 300,
+    height: 1000,
+    width: 330,
+    alignSelf: 'center'
   },
 });
 

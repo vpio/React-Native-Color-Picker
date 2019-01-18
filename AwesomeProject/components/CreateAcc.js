@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 import axios from 'axios';
+import { View, Examples, ImageBackground, Screen, Tile, Overlay, Title, Caption, Button, Text, TextInput } from '@shoutem/ui';
 
 class CreateAcc extends Component{
   state = {
@@ -17,7 +18,7 @@ class CreateAcc extends Component{
     // })
     console.log(email, password, userName)
 
-    axios.post('http://192.168.7.228:3000/api/v1/users/create', {
+    axios.post('http://10.1.10.211:3000/api/v1/users/create', {
       user: {
         email: email,
         password: password,
@@ -38,18 +39,22 @@ class CreateAcc extends Component{
   render(){
     const {email, password, userName} = this.state
     return (
-      <View style = {styles.container}>
-        <View style={styles.formContainer}>
+
+        <ScrollView
+style = {styles.container}
+           scrollEnabled={false}
+           keyboardShouldPersistTaps="never"
+           >
+
           <Text>Username:</Text>
           <TextInput
-            style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-            returnKeyType={'next'}
+            style={{borderColor: 'gray', borderBottomWidth: 1}}
             autoCapitalize={'none'}
             onChangeText={(userName) => this.setState({userName})}
             value={userName}/>
           <Text>Email:</Text>
           <TextInput
-            style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+            style={{borderColor: 'gray', borderBottomWidth: 1}}
             autoCapitalize={'none'}
             keyboardType={'email-address'}
             textContentType={'emailAddress'}
@@ -57,30 +62,36 @@ class CreateAcc extends Component{
             value={email}/>
           <Text>Password:</Text>
           <TextInput
-            style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+            style={{borderColor: 'gray', borderBottomWidth: 1}}
             autoCapitalize={'none'}
             secureTextEntry={true}
             textContentType={'password'}
             onChangeText={(password) => this.setState({password})}
             value={password}/>
-        </View>
+
         <Button
-          style={{
-            color: 'red'
-          }}
           onPress={() => {this.handleSubmit()}}
-          title="Sign Up"
-          />
-      </View>
+          >
+          <Text>Sign Up</Text>
+        </Button>
+        <Button
+          onPress={() => {this.props.navigator.pop()}}
+          >
+          <Text>Back</Text>
+        </Button>
+      </ScrollView>
+
     )
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    marginTop: 50,
-    justifyContent: 'center',
+    flex: 1,
+    paddingTop: 200,
+    height: 1000,
+    width: 300,
+    alignSelf: 'center'
   },
   formContainer: {
     width: 300,
