@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "AwesomeProject",
-    "slug": "AwesomeProject",
+    "name": "Color Picker",
+    "slug": "colorpicker",
     "privacy": "public",
     "sdkVersion": "31.0.0",
     "platforms": [
@@ -24,6 +24,8 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "",
+    "githubUrl": "https://github.com/vpio/React-Native-Color-Picker"
   }
 }
