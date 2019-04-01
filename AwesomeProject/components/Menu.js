@@ -49,7 +49,7 @@ class Menu extends React.Component {
 
 
   render() {
-    const {loggedIn, user} = this.props
+    const {loggedIn, user, appStart} = this.props
     const nextRoute = {
       component: Sample,
       title: 'Login',
@@ -70,6 +70,32 @@ class Menu extends React.Component {
     if (!this.state.fontsAreLoaded) {
       return <AppLoading />;
     }
+
+    else if (appStart && !loggedIn){
+      return(
+        <View style={styles.container}>
+          <Button
+            onPress={() => {
+              this._handleNextPress(nextRoute);
+              Haptic.impact(Haptic.ImpactFeedbackStyle.Heavy);
+            }}
+            >
+            <Text>Login</Text>
+          </Button>
+          <Button
+            onPress={() => {
+              this._handleNextPress(createAcc)
+              Haptic.impact(Haptic.ImpactFeedbackStyle.Heavy);
+            }}
+            >
+            <Text>Sign Up</Text>
+          </Button>
+        </View>
+
+      )
+
+      }
+
 
     else if (loggedIn){
       return(
@@ -104,6 +130,14 @@ class Menu extends React.Component {
               <View style={{marginTop: 200}}styleName="horizontal flexible">
                 <Button
                   onPress={() => {
+                    this.props.start();
+                    Haptic.impact(Haptic.ImpactFeedbackStyle.Heavy);
+                  }}
+                  styleName="full-width">
+                  <Text>Start</Text>
+                </Button>
+{/*                <Button
+                  onPress={() => {
                     this._handleNextPress(nextRoute);
                     Haptic.impact(Haptic.ImpactFeedbackStyle.Heavy);
                   }}
@@ -113,11 +147,11 @@ class Menu extends React.Component {
                 <Button
                   onPress={() => {
                     this._handleNextPress(createAcc)
-                    Haptic.impact(Haptic.ImpactFeedbackStyle.Heavy); 
+                    Haptic.impact(Haptic.ImpactFeedbackStyle.Heavy);
                   }}
                   styleName="full-width">
                   <Text>Sign Up</Text>
-                </Button>
+                </Button>*/}
               </View>
             </View>
           </ImageBackground>

@@ -75,7 +75,7 @@ class Sample extends Component{
           <Button
             onPress={() => { this.props.createAcc() }}
             >
-            <Text>Creat an Account</Text>
+            <Text>Create an Account</Text>
           </Button>
           <Button
             onPress={() => { this.props.navigator.pop() }}
@@ -92,11 +92,15 @@ class Sample extends Component{
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 300,
+    paddingTop: 200,
     height: 1000,
-    width: 330,
+    width: 300,
     alignSelf: 'center'
   },
+  formContainer: {
+    width: 300,
+    alignSelf: 'center'
+  }
 });
 
 export default Sample;

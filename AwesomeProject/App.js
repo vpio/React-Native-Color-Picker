@@ -1,4 +1,5 @@
 import React from 'react';
+import Alert from 'react-native';
 import { Divider, Header, Button } from 'react-native-elements';
 import axios from 'axios';
 import TabIndex from './components/TabIndex';
@@ -31,7 +32,8 @@ export default class App extends React.Component {
     user: {},
     user_token: '',
     modalVisible: false,
-    fontsAreLoaded: false
+    fontsAreLoaded: false,
+    appStart: false
   }
 
 
@@ -142,10 +144,9 @@ export default class App extends React.Component {
   }
 
   saveColor = () => {
-    let {hex} = this.state
+    let {hex, colorArr} = this.state
     // uncomment this if saved data gets deleted in order to set an initial value
-    // AsyncStorage.setItem("myKey", hex)
-    let {colorArr} = this.state
+    // AsyncStorage.setItem("myKey", hex)``
     let addedColor = this.state.colorArr.concat(hex)
     console.log(addedColor)
     this.setState({colorArr: addedColor})
@@ -156,6 +157,21 @@ export default class App extends React.Component {
   }
 
   deleteColor = (hex) => {
+    Alert.alert(
+    'Alert Title',
+    'My Alert Msg',
+    [
+      {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'OK', onPress: () => console.log('OK Pressed')},
+    ],
+    {cancelable: false},
+  );
+
     console.log("here is the hex that got transmitted: ", hex)
     let {colorArr} = this.state
     console.log("Array that it is getting removed from: ", colorArr)
@@ -283,11 +299,13 @@ export default class App extends React.Component {
            component: Menu,
            title: 'Menu',
            passProps: {
+             start: () => { this.setState({ appStart: true }) },
              login: this.handleSubmit,
              user: this.state.user,
              loggedIn: this.state.loggedIn,
              logOut: this.handleLogOut,
-             onTab: this.onLogOutMenu()
+             onTab: this.onLogOutMenu(),
+             appStart: this.state.appStart
 
            }
          }}
@@ -300,13 +318,13 @@ export default class App extends React.Component {
     const panStyle = {
       transform: this.state.pan.getTranslateTransform()
     }
-    const {loggedIn, user, modalVisible} = this.state
+    const {loggedIn, user, modalVisible, appStart} = this.state
 
     if (!this.state.fontsAreLoaded) {
       return <AppLoading />;
     }
 
-    else if (!loggedIn){
+    else if (!appStart){
       return (
         <React.Fragment>
           {this._renderMenu()}
