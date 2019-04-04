@@ -65,7 +65,7 @@ class SavedColors extends React.Component {
                 rightButtons={[
                   <TouchableHighlight>
                     <TouchableOpacity
-                      onPress = {() => props.deleteColor(color)}
+                      onPress = {() => this.props.deleteColor(color)}
                       >
                       <View style={styles.container2}><Text style={{'color':'white'}}>Delete</Text></View>
                     </TouchableOpacity>
