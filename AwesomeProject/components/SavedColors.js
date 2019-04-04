@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  ContentContainer: {
+  contentContainer: {
     paddingTop: 200
   },
   leftContent: {
@@ -55,7 +55,7 @@ class SavedColors extends React.Component {
     return (
         <ScrollView
           stickyHeaderIndices={[0]}
-          contentContainerStyle={styles.contentContainer}
+          contentContainerStyle={styles.ContentContainer}
           >
           <ColorFilter />
           {
