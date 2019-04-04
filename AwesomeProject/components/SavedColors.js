@@ -41,7 +41,6 @@ class SavedColors extends React.Component {
     edit: true
   }
 
-
   render() {
     const colorOptions =
     <TouchableHighlight
@@ -49,7 +48,6 @@ class SavedColors extends React.Component {
       >
       <Icon name="close" />
     </TouchableHighlight>
-    let leftButton = this.state.edit ? colorOptions : null;
     console.log(this.props.savedColors)
     if (this.props.savedColors.length > 0){
     return (
