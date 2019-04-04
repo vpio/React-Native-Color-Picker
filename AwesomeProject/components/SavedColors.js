@@ -57,6 +57,7 @@ class SavedColors extends React.Component {
           stickyHeaderIndices={[0]}
           contentContainerStyle={styles.contentContainer}
           >
+          <ColorFilter />
           {
             sortColors(this.props.savedColors).map((color, i) => {
               const savedColor =
