@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, ScrollView, TouchableHighlight, Text, StyleSheet, TouchableOpacity, Button  } from 'react-native';
+import {View, ScrollView, TouchableHighlight, Text, StyleSheet, TouchableOpacity, Button, Alert  } from 'react-native';
 import { ListItem, Divider, Switch} from 'react-native-elements';
 import Swipeable from 'react-native-swipeable';
 import { Title, DropDownMenu, Icon } from '@shoutem/ui';
@@ -40,10 +40,12 @@ class SavedColors extends React.Component {
   state = {
     edit: true
   }
+
+
   render() {
     const colorOptions =
     <TouchableHighlight
-      onPress={() => this.props.deleteColor()}
+      onPress={(e) => console.log(e.value)}
       >
       <Icon name="close" />
     </TouchableHighlight>
@@ -57,7 +59,24 @@ class SavedColors extends React.Component {
           >
           <Button onPress={() => this.setState({edit: true})} title={"edit"}/>
           <Button onPress={() => this.setState({edit: false})} title={"done"}/>
-          <ColorFilter />
+          <Button onPress={() =>  {
+            Alert.alert(
+                   'Alert Title',
+                   'My Alert Msg',
+                   [
+                     {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
+                     {
+                       text: 'Cancel',
+                       onPress: () => console.log('Cancel Pressed'),
+                       style: 'cancel',
+                     },
+                     {text: 'OK', onPress: () => console.log('OK Pressed')},
+                   ],
+                   {cancelable: false},
+                 );
+            }
+          } title={"alert"}/>
+
           {
             sortColors(this.props.savedColors).map((color, i) => {
               const savedColor =

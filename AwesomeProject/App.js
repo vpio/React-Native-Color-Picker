@@ -55,37 +55,6 @@ export default class App extends React.Component {
     });
 
     this.setState({ fontsAreLoaded: true });
-    axios.get('http://localhost:3001/api/v1/colors.json')
-          .then(response => {
-              console.log("hello it worked *******", response)
-              // this.setState({
-              //     lists: response.data
-              // })
-          })
-          .catch(error => console.log("hello please work **********", error))
-
-    // this._val = { x:0, y:0 }
-    // this.state.pan.addListener((value) => this._val = value);
-    //
-    // this.panResponder = PanResponder.create({
-    //   onStartShouldSetPanResponder: (e, gesture) => true,
-    //   onPanResponderMove: Animated.event([
-    //     null, { dx: this.state.pan.x, dy: this.state.pan.y }
-    //   ]),
-    //   onPanResponderGrant: (e, gestureState) => {
-    //     // Set the initial value to the current state
-    //     this.state.pan.setOffset({x: this.state.pan.x._value, y: this.state.pan.y._value});
-    //     this.state.pan.setValue({x: 0, y: 0});
-    //   },
-    //   onPanResponderRelease: (e, gesture) => {
-    //      // this.state.pan.flattenOffset();
-    //    Animated.spring(this.state.pan, {
-    //      toValue: { x: 0, y: 0 },
-    //      friction: 5
-    //    }).start();
-    //  }
-    // });
-    // this.state.pan.setValue({ x:0, y:0})
 
     AsyncStorage.getItem("myToken")
            .then((value) => {
@@ -157,20 +126,6 @@ export default class App extends React.Component {
   }
 
   deleteColor = (hex) => {
-    Alert.alert(
-    'Alert Title',
-    'My Alert Msg',
-    [
-      {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
-      {
-        text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel',
-      },
-      {text: 'OK', onPress: () => console.log('OK Pressed')},
-    ],
-    {cancelable: false},
-  );
 
     console.log("here is the hex that got transmitted: ", hex)
     let {colorArr} = this.state
@@ -186,7 +141,6 @@ export default class App extends React.Component {
   }
 
   showColor = () => {
-    console.log("doing what were supposed to here")
     AsyncStorage.getItem("myKey").then((value) =>
            JSON.parse(value))
            .then(json => {
