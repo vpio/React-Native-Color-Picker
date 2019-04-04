@@ -16,7 +16,6 @@ module Api::V1
 
     # POST /colors
     def create
-      puts "yo man lets go"
       puts color_params
       @color = Color.new(color_params)
 
