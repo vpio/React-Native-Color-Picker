@@ -1,37 +1,23 @@
 import React from 'react';
-import Alert from 'react-native';
-import { Divider, Header, Button } from 'react-native-elements';
 import axios from 'axios';
 import TabIndex from './components/TabIndex';
 import ColorPicker from './components/ColorPicker';
 import SavedColors from './components/SavedColors';
 import Menu from './components/Menu';
 import { Font, AppLoading } from 'expo';
-import {
-  StyleSheet,
-  Text,
-  View,
-  PanResponder,
-  Animated,
-  AsyncStorage,
-  TabBarIOS,
-  NavigatorIOS,
-  Modal,
-  TouchableHighlight
-} from 'react-native';
+import StartPage from './components/StartPage';
+import { AsyncStorage, NavigatorIOS } from 'react-native';
 
 
 export default class App extends React.Component {
   state = {
     toggle: false,
-    pan: new Animated.ValueXY(),
     hex: '#ffffff',
     colorArr: [],
     selectedTab: 'tab1',
     loggedIn: false,
     user: {},
     user_token: '',
-    modalVisible: false,
     fontsAreLoaded: false,
     appStart: false
   }
@@ -59,33 +45,31 @@ export default class App extends React.Component {
     AsyncStorage.getItem("myToken")
            .then((value) => {
              if (value) {
-               console.log("intercepted")
                this.setState({
                  user_token: value,
                  loggedIn: true
                 })
-                axios.get('http://10.1.10.211:3000/api/v1/users/current', {
+                axios.get('http://192.168.7.228:3000/api/v1/users/current', {
                   headers: {
                     "Authorization": `Bearer ${this.state.user_token}`,
                     "Content-Type": `application/json`
                   }
                 })
                 .then((response) => {
-                  console.log("option 1")
                   this.setState({
                     user: response.data ,
                   })
                 })
                 .catch((e) => { console.log(e.message) } )
-               console.log(this.state.user_token)
              }
            })
            .catch(error => console.log('error!'))
            .done();
+
   // If the user has a token, send the following request to get their info
     if (this.state.user_token){
       console.log('doing this')
-      axios.get('http://10.1.10.211:3000/api/v1/users/current', {
+      axios.get('http://192.168.7.228:3000/api/v1/users/current', {
         headers: {
           "Authorization": `Bearer ${this.state.user_token}`,
           "Content-Type": `application/json`
@@ -120,35 +104,30 @@ export default class App extends React.Component {
     console.log(addedColor)
     this.setState({colorArr: addedColor})
     AsyncStorage.setItem("myKey", JSON.stringify(colorArr))
-        // this.setState({"myKey": hex});
-    // console.log("hi")
-    // axios.post('http://localhost:3001/api/v1/colors.json', {color: {hex_code: hex}})
   }
 
   deleteColor = (hex) => {
+    // These console logs are for debugging delete via AsyncStorage
 
-    console.log("here is the hex that got transmitted: ", hex)
+    // console.log("here is the hex that got transmitted: ", hex)
     let {colorArr} = this.state
-    console.log("Array that it is getting removed from: ", colorArr)
+    // console.log("Array that it is getting removed from: ", colorArr)
     let index = this.state.colorArr.indexOf(`#${hex}`)
-    console.log("this is the index of that hex: ", index)
+    // console.log("this is the index of that hex: ", index)
     let deletedColor = colorArr.splice(index, 1)
-    console.log("deleting this color: ", deletedColor)
+    // console.log("deleting this color: ", deletedColor)
 
     AsyncStorage.setItem("myKey", JSON.stringify(colorArr))
     this.setState({colorArr})
-
   }
 
   showColor = () => {
     AsyncStorage.getItem("myKey").then((value) =>
            JSON.parse(value))
            .then(json => {
-             console.log("dont be null ", json)
              if(json !== null){
                this.setState({colorArr: json})
              }
-             console.log("what has this become ", this.state.colorArr)
            })
            .catch(error => console.log('error!'))
            .done();
@@ -161,9 +140,7 @@ export default class App extends React.Component {
   }
 
   handleSubmit = (email, password) => {
-    console.log("got the right end point", email)
-
-    axios.post('http://10.1.10.211:3000/api/v1/user_token', {
+    axios.post('http://192.168.7.228:3000/api/v1/user_token', {
       auth: {
         "email": email,
         "password": password
@@ -171,12 +148,10 @@ export default class App extends React.Component {
     })
     .then((response) => {
       this.setState({
-        user_token: response.data.jwt,
-        selectedTab: 'tab1'
-       })
-      console.log("user token", response.data.jwt)
+        user_token: response.data.jwt
+      });
 
-      axios.get('http://10.1.10.211:3000/api/v1/users/current', {
+      axios.get('http://192.168.7.228:3000/api/v1/users/current', {
         headers: {
           "Authorization": `Bearer ${this.state.user_token}`,
           "Content-Type": `application/json`
@@ -185,11 +160,9 @@ export default class App extends React.Component {
       .then((response) => {
         this.setState({
           user: response.data ,
-          loggedIn: true,
-          modalVisible: true
+          loggedIn: true
         })
         AsyncStorage.setItem("myToken", this.state.user_token)
-        console.log(response.data)
       })
       .catch((e) => { console.log(e.message) } )
     })
@@ -197,17 +170,12 @@ export default class App extends React.Component {
   }
 
   handleLogOut = () => {
-
       this.setState({
         loggedIn: false,
         user_token: ''
       })
 
     AsyncStorage.setItem("myToken", '')
-  }
-
-  toggleModal = () => {
-    this.setState({ modalVisible: !this.state.modalVisible})
   }
 
   _renderColorPicker = () => {
@@ -219,74 +187,60 @@ export default class App extends React.Component {
           getRandomColor = {this.getRandomColor}
           toggle = {this.state.toggle}
           hex = {this.state.hex}
-          modalVisible={this.state.modalVisible}
-          toggleModal={this.toggleModal}
           />
     )
   }
 
   _renderSavedColors = () => {
-    console.log("should also be gucci", this.state.colorArr)
-    return(
+    return (
       <SavedColors
         savedColors = {this.state.colorArr}
         deleteColor = {this.deleteColor}
         />
-    )
+    );
   }
 
-  onLogOutMenu = () => {
-    if (this.state.selectedTab === 'tab1' || this.state.selectedTab === 'tab2'){
-      return true
-    }
-    else{
-      return false
-    }
-  }
 
   _renderMenu = () => {
+    console.log('state.loggedIn ', this.state.loggedIn)
     return(
       <NavigatorIOS
-      translucent={ true }
-      navigationBarHidden={true}
-      initialRoute={{
-           component: Menu,
-           title: 'Menu',
-           passProps: {
-             start: () => { this.setState({ appStart: true }) },
-             login: this.handleSubmit,
-             user: this.state.user,
-             loggedIn: this.state.loggedIn,
-             logOut: this.handleLogOut,
-             onTab: this.onLogOutMenu(),
-             appStart: this.state.appStart
+        translucent={ true }
+        navigationBarHidden={true}
+        initialRoute={{
+          component: Menu,
+          title: 'Menu',
+          passProps: {
+            login: this.handleSubmit,
+            user: this.state.user,
+            loggedIn: this.state.loggedIn,
+            logOut: this.handleLogOut
+          }
+        }}
+        style={{flex: 1}}
+        />
+    );
+  }
 
-           }
-         }}
-         style={{flex: 1}}
-      />
-    )
+  startApp = () => {
+    this.setState({ appStart: true });
   }
 
   render() {
-    const panStyle = {
-      transform: this.state.pan.getTranslateTransform()
-    }
-    const {loggedIn, user, modalVisible, appStart} = this.state
+    const {loggedIn, user, appStart} = this.state
 
     if (!this.state.fontsAreLoaded) {
       return <AppLoading />;
     }
-
     else if (!appStart){
       return (
-        <React.Fragment>
-          {this._renderMenu()}
-        </React.Fragment>
-      )
+        <StartPage
+          start={() => { this.startApp() }}
+          appStart={this.state.appStart}
+          />
+      );
     }
     else {
-      console.log("user info: ", user)
       return (
         <React.Fragment>
         <TabIndex
@@ -299,6 +253,5 @@ export default class App extends React.Component {
       </React.Fragment>
       );
     }
-
   }
 }

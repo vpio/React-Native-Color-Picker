@@ -12,13 +12,9 @@ class CreateAcc extends Component{
 
   handleSubmit = () => {
     const {email, password, userName} = this.state
-    // this.props.login(email, password)
-    // axios.get('http://localhost:3000/users').then((response) => {
-    //   console.log(response.data)
-    // })
-    console.log(email, password, userName)
+    // console.log(email, password, userName)
 
-    axios.post('http://10.1.10.211:3000/api/v1/users/create', {
+    axios.post('http://192.168.7.228:3000/api/v1/users/create', {
       user: {
         email: email,
         password: password,
@@ -26,7 +22,6 @@ class CreateAcc extends Component{
       }
     })
     .then((response) => {
-      // console.log("yo", this.props)
      this.props.login(email, password)
      this.props.navigator.popToTop();
      console.log(response);
@@ -39,36 +34,33 @@ class CreateAcc extends Component{
   render(){
     const {email, password, userName} = this.state
     return (
-
-        <ScrollView
-style = {styles.container}
-           scrollEnabled={false}
-           keyboardShouldPersistTaps="never"
-           >
-
-          <Text>Username:</Text>
-          <TextInput
-            style={{borderColor: 'gray', borderBottomWidth: 1}}
-            autoCapitalize={'none'}
-            onChangeText={(userName) => this.setState({userName})}
-            value={userName}/>
-          <Text>Email:</Text>
-          <TextInput
-            style={{borderColor: 'gray', borderBottomWidth: 1}}
-            autoCapitalize={'none'}
-            keyboardType={'email-address'}
-            textContentType={'emailAddress'}
-            onChangeText={(email) => this.setState({email})}
-            value={email}/>
-          <Text>Password:</Text>
-          <TextInput
-            style={{borderColor: 'gray', borderBottomWidth: 1}}
-            autoCapitalize={'none'}
-            secureTextEntry={true}
-            textContentType={'password'}
-            onChangeText={(password) => this.setState({password})}
-            value={password}/>
-
+      <ScrollView
+        style = {styles.container}
+        scrollEnabled={false}
+        keyboardShouldPersistTaps="never"
+        >
+        <Text>Username:</Text>
+        <TextInput
+          style={{borderColor: 'gray', borderBottomWidth: 1}}
+          autoCapitalize={'none'}
+          onChangeText={(userName) => this.setState({userName})}
+          value={userName}/>
+        <Text>Email:</Text>
+        <TextInput
+          style={{borderColor: 'gray', borderBottomWidth: 1}}
+          autoCapitalize={'none'}
+          keyboardType={'email-address'}
+          textContentType={'emailAddress'}
+          onChangeText={(email) => this.setState({email})}
+          value={email}/>
+        <Text>Password:</Text>
+        <TextInput
+          style={{borderColor: 'gray', borderBottomWidth: 1}}
+          autoCapitalize={'none'}
+          secureTextEntry={true}
+          textContentType={'password'}
+          onChangeText={(password) => this.setState({password})}
+          value={password}/>
         <Button
           onPress={() => {this.handleSubmit()}}
           >
@@ -80,8 +72,7 @@ style = {styles.container}
           <Text>Back</Text>
         </Button>
       </ScrollView>
-
-    )
+    );
   }
 }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { NavigatorIOS, TouchableHighlight, ScrollView, StyleSheet, AsyncStorage, YellowBox } from 'react-native';
-import Sample from './Sample.js';
+import LoginMenu from './LoginMenu.js';
 import CreateAcc from './CreateAcc.js';
 import axios from 'axios';
 import { View, Examples, ImageBackground, Screen, Tile, Overlay, Title, Caption, Button, Text } from '@shoutem/ui';
@@ -15,12 +15,11 @@ YellowBox.ignoreWarnings([
 
 class Menu extends React.Component {
   state = {
-    fontsAreLoaded: false,
+    fontsAreLoaded: false
   };
 
-
   async componentWillMount() {
-
+    console.log("hello")
       await Font.loadAsync({
         'Rubik-Black': require('../node_modules/@shoutem/ui/fonts/Rubik-Black.ttf'),
         'Rubik-BlackItalic': require('../node_modules/@shoutem/ui/fonts/Rubik-BlackItalic.ttf'),
@@ -36,7 +35,10 @@ class Menu extends React.Component {
       });
 
       this.setState({ fontsAreLoaded: true });
+  }
 
+  handleLogOut = () => {
+    this.props.logOut();
   }
 
   _handleBackPress() {
@@ -49,9 +51,10 @@ class Menu extends React.Component {
 
 
   render() {
-    const {loggedIn, user, appStart} = this.props
+    const {user, appStart, loggedIn} = this.props;
+    console.log('rendered!', loggedIn)
     const nextRoute = {
-      component: Sample,
+      component: LoginMenu,
       title: 'Login',
       passProps: {
         userName: this.props.user.username,
@@ -67,97 +70,44 @@ class Menu extends React.Component {
         login: this.props.login
        }
     };
+
+
     if (!this.state.fontsAreLoaded) {
       return <AppLoading />;
     }
-
-    else if (appStart && !loggedIn){
-      return(
-        <View style={styles.container}>
-          <Button
-            onPress={() => {
-              this._handleNextPress(nextRoute);
-              Haptic.impact(Haptic.ImpactFeedbackStyle.Heavy);
-            }}
-            >
-            <Text>Login</Text>
-          </Button>
-          <Button
-            onPress={() => {
-              this._handleNextPress(createAcc)
-              Haptic.impact(Haptic.ImpactFeedbackStyle.Heavy);
-            }}
-            >
-            <Text>Sign Up</Text>
-          </Button>
-        </View>
-
-      )
-
-      }
-
 
     else if (loggedIn){
       return(
         <View style={styles.container}>
           <Text>{`You are currently Logged-in as ${user.username}`}</Text>
             <Button
-              onPress={() => {this.props.logOut()}}
+              onPress={() => {this.handleLogOut()}}
               >
               <Text>Log Out</Text>
             </Button>
         </View>
-      )
-    }
-    else {
-      return(
-        <View>
-          <ImageBackground
-            styleName="featured"
-            source={ require('../assets/images/6320.jpg') }
-
-            style={{marginTop: 200}}
-            >
-            <View style={styles.container}>
-              <View style={{marginTop: 150}}>
-                <Tile styleName="clear">
-                  <Overlay>
-                    <Title >Color Picker App 2019</Title>
-                    <Caption>Made by Pio M.</Caption>
-                  </Overlay>
-                </Tile>
-              </View>
-              <View style={{marginTop: 200}}styleName="horizontal flexible">
-                <Button
-                  onPress={() => {
-                    this.props.start();
-                    Haptic.impact(Haptic.ImpactFeedbackStyle.Heavy);
-                  }}
-                  styleName="full-width">
-                  <Text>Start</Text>
-                </Button>
-{/*                <Button
-                  onPress={() => {
-                    this._handleNextPress(nextRoute);
-                    Haptic.impact(Haptic.ImpactFeedbackStyle.Heavy);
-                  }}
-                  styleName="full-width">
-                  <Text>Login</Text>
-                </Button>
-                <Button
-                  onPress={() => {
-                    this._handleNextPress(createAcc)
-                    Haptic.impact(Haptic.ImpactFeedbackStyle.Heavy);
-                  }}
-                  styleName="full-width">
-                  <Text>Sign Up</Text>
-                </Button>*/}
-              </View>
-            </View>
-          </ImageBackground>
-        </View>
       );
     }
+    return (
+      <View style={styles.container}>
+        <Button
+          onPress={() => {
+            this._handleNextPress(nextRoute);
+            Haptic.impact(Haptic.ImpactFeedbackStyle.Heavy);
+          }}
+          >
+          <Text>Login</Text>
+        </Button>
+        <Button
+          onPress={() => {
+            this._handleNextPress(createAcc)
+            Haptic.impact(Haptic.ImpactFeedbackStyle.Heavy);
+          }}
+          >
+          <Text>Sign Up</Text>
+        </Button>
+      </View>
+    );
   }
 }
 

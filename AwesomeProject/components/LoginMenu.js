@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import {  StyleSheet, Keyboard, TouchableWithoutFeedback, Easing, ScrollView } from 'react-native';
-import axios from 'axios';
-import { View, Examples, ImageBackground, Screen, Tile, Overlay, Title, Caption, Button, Text, TextInput } from '@shoutem/ui';
-import { TimingDriver, ZoomIn } from '@shoutem/animation';
+import {  StyleSheet, ScrollView } from 'react-native';
+import { Button, Text, TextInput } from '@shoutem/ui';
 
-
-class Sample extends Component{
+class LoginMenu extends Component{
   state = {
     email: "",
     password: "",
@@ -17,37 +14,12 @@ class Sample extends Component{
 
     console.log(email, password)
     this.props.login(email, password)
-    // this.props.navigator.pop();
-    // console.log("got the right end point")
-    //
-    // axios.post('http://localhost:3000/api/v1/user_token', {
-    //   auth: {
-    //     email: this.state.email,
-    //     password: this.state.password
-    //   }
-    // })
-    // .then((response) => {
-    //   this.setState({user_token: response.data.jwt })
-    //   console.log(this.state.user_token)
-    // })
-    // .catch((e) => { console.log(e) })
-    //
-    // axios.get('http://localhost:3000/api/v1/auth')
-    // .then((response) => {
-    //   console.log(response)
-    // })
-    // .catch((e) => { console.log(e) } )
+    this.props.navigator.pop();
   }
 
   render(){
     const {email, password} = this.state
-    const driver = new TimingDriver({
-      "duration": 400,
-      "easing": Easing.inOut,
-      "delay": 200,
-    });
     return (
-
         <ScrollView
            style={styles.container}
            scrollEnabled={false}
@@ -59,7 +31,6 @@ class Sample extends Component{
             autoCapitalize={'none'}
             onChangeText={(email) => this.setState({email})}
             value={email}/>
-
           <Text>Password:</Text>
           <TextInput
             style={{borderColor: 'gray', borderBottomWidth: 1}}
@@ -83,9 +54,7 @@ class Sample extends Component{
             <Text>Back</Text>
           </Button>
         </ScrollView>
-
-
-    )
+    );
   }
 }
 
@@ -103,4 +72,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Sample;
+export default LoginMenu;
