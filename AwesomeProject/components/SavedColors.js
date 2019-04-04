@@ -57,37 +57,28 @@ class SavedColors extends React.Component {
           stickyHeaderIndices={[0]}
           contentContainerStyle={styles.contentContainer}
           >
-          <Button onPress={() => this.setState({edit: true})} title={"edit"}/>
-          <Button onPress={() => this.setState({edit: false})} title={"done"}/>
-          <Button onPress={() =>  {
-            Alert.alert(
-                   'Alert Title',
-                   'My Alert Msg',
-                   [
-                     {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
-                     {
-                       text: 'Cancel',
-                       onPress: () => console.log('Cancel Pressed'),
-                       style: 'cancel',
-                     },
-                     {text: 'OK', onPress: () => console.log('OK Pressed')},
-                   ],
-                   {cancelable: false},
-                 );
-            }
-          } title={"alert"}/>
-
           {
             sortColors(this.props.savedColors).map((color, i) => {
               const savedColor =
-                  <View key={`color ${i}`}>
-                    <ListItem
-                      leftIcon={leftButton}
-                      title={color}
-                      titleStyle={{'display': 'none'}}
-                      containerStyle={[{'backgroundColor': `#${color}`}, styles.itemContainer]}
-                      />
-                  </View>
+              <Swipeable
+                key={`color ${i}`}
+                rightButtons={[
+                  <TouchableHighlight>
+                    <TouchableOpacity
+                      onPress = {() => props.deleteColor(color)}
+                      >
+                      <View style={styles.container2}><Text style={{'color':'white'}}>Delete</Text></View>
+                    </TouchableOpacity>
+                  </TouchableHighlight>
+                ]}
+                rightButtonWidth={60}
+                rightButtonContainerStyle={{'backgroundColor': 'red'}}
+                >
+                <ListItem
+                  title={color}
+                  containerStyle={{'backgroundColor': `#${color}`}}
+                  />
+              </Swipeable>
               return (
                 savedColor
               )
