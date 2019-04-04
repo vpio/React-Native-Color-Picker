@@ -45,10 +45,6 @@ class ColorFilter extends Component {
 
     return (
       <Screen>
-        <NavigationBar
-          title="Views"
-          styleName="inline"
-        />
         <DropDownMenu
           styleName="horizontal"
           options={this.state.filters}

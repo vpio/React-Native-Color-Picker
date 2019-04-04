@@ -1,8 +1,8 @@
 import React from 'react';
-import {View, ScrollView, TouchableHighlight, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { ListItem, Divider, Switch, Button } from 'react-native-elements';
+import {View, ScrollView, TouchableHighlight, Text, StyleSheet, TouchableOpacity, Button, Alert  } from 'react-native';
+import { ListItem, Divider, Switch} from 'react-native-elements';
 import Swipeable from 'react-native-swipeable';
-import { Title, NavigationBar, DropDownMenu } from '@shoutem/ui';
+import { Title, DropDownMenu, Icon } from '@shoutem/ui';
 import ColorFilter from './ColorFilter.js';
 
 function sortColors(hexArr){
@@ -15,7 +15,7 @@ function sortColors(hexArr){
 
 const styles = StyleSheet.create({
   container2: {
-    marginTop: 20,
+    marginTop: 18,
     marginLeft: 10
   },
   center2: {
@@ -23,29 +23,49 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  ContentContainer: {
+  contentContainer: {
     paddingTop: 200
+  },
+  leftContent: {
+    alignItems: 'flex-end',
+    paddingRight: 10,
+    marginTop: 18
+  },
+  itemContainer: {
+    height: 50
+
   }
 })
 
-const SavedColors = props => {
-  console.log(props.savedColors)
-  if (props.savedColors.length > 0){
-  return (
-      <ScrollView
-        stickyHeaderIndices={[0]}
-        contentContainerStyle={styles.contentContainer}
-        >
-        <ColorFilter />
-        {
-          sortColors(props.savedColors).map((color, i) => {
-            return (
+class SavedColors extends React.Component {
+  state = {
+    edit: true
+  }
+
+  render() {
+    const colorOptions =
+    <TouchableHighlight
+      onPress={(e) => console.log(e.value)}
+      >
+      <Icon name="close" />
+    </TouchableHighlight>
+    console.log(this.props.savedColors)
+    if (this.props.savedColors.length > 0){
+    return (
+        <ScrollView
+          stickyHeaderIndices={[0]}
+          contentContainerStyle={styles.ContentContainer}
+          >
+          <ColorFilter />
+          {
+            sortColors(this.props.savedColors).map((color, i) => {
+              const savedColor =
               <Swipeable
                 key={`color ${i}`}
                 rightButtons={[
                   <TouchableHighlight>
                     <TouchableOpacity
-                      onPress = {() => props.deleteColor(color)}
+                      onPress = {() => this.props.deleteColor(color)}
                       >
                       <View style={styles.container2}><Text style={{'color':'white'}}>Delete</Text></View>
                     </TouchableOpacity>
@@ -59,17 +79,20 @@ const SavedColors = props => {
                   containerStyle={{'backgroundColor': `#${color}`}}
                   />
               </Swipeable>
-            )
-          })
-        }
-      </ScrollView>
-  )}
-  else {
-    return (
-      <View style={styles.center2}>
-        <Title styleName="line-through" >Aint no colors here</Title>
-      </View>
-    )
+              return (
+                savedColor
+              )
+            })
+          }
+        </ScrollView>
+    )}
+    else {
+      return (
+        <View style={styles.center2}>
+          <Title styleName="line-through" >Aint no colors here</Title>
+        </View>
+      )
+    }
   }
 }
 

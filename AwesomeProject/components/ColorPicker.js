@@ -22,7 +22,7 @@ const ColorPicker = props => {
           props.saveColor()
           Haptic.selection()
         }}
-        style={{marginTop: 30}}
+        style={styles.button}
         >
         <Text>Save This Color</Text>
       </Button>
@@ -45,5 +45,8 @@ const styles = StyleSheet.create({
     width: CIRCLE_RADIUS * 2,
     height: CIRCLE_RADIUS * 2,
     borderRadius: CIRCLE_RADIUS
+  },
+  button: {
+    marginTop: 30
   }
 });
