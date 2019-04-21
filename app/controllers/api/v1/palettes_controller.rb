@@ -1,5 +1,9 @@
 module Api::V1
-  class ColorsController < ApplicationController
+  class PalettesController < ApplicationController
+
+    def create
+      
+    end
 
   end
 end
