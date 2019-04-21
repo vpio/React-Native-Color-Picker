@@ -14,7 +14,7 @@ class CreateAcc extends Component{
     const {email, password, userName} = this.state
     // console.log(email, password, userName)
 
-    axios.post('http://192.168.7.228:3000/api/v1/users/create', {
+    axios.post('http://localhost:3000/api/v1/users/create', {
       user: {
         email: email,
         password: password,

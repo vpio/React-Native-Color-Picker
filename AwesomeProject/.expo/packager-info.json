@@ -1,18 +1,9 @@
 {
-  "devToolsPort": 19002,
-<<<<<<< HEAD
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 66246,
-  "expoServerNgrokUrl": "https://kp-x44.anonymous.awesomeproject.exp.direct",
-  "packagerNgrokUrl": "https://packager.kp-x44.anonymous.awesomeproject.exp.direct",
-  "ngrokPid": 66266
-=======
   "expoServerPort": null,
+  "expoServerNgrokUrl": "https://kp-x44.vpio93.awesomeproject.exp.direct",
+  "packagerNgrokUrl": "https://packager.kp-x44.vpio93.awesomeproject.exp.direct",
+  "ngrokPid": 17840,
+  "devToolsPort": 19002,
   "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
->>>>>>> master
+  "packagerPid": null
 }

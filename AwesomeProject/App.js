@@ -7,6 +7,7 @@ import Menu from './components/Menu';
 import { Font, AppLoading } from 'expo';
 import StartPage from './components/StartPage';
 import { AsyncStorage, NavigatorIOS } from 'react-native';
+import LoggedInPage from './components/LoggedInPage';
 
 
 export default class App extends React.Component {
@@ -49,7 +50,7 @@ export default class App extends React.Component {
                  user_token: value,
                  loggedIn: true
                 })
-                axios.get('http://192.168.7.228:3000/api/v1/users/current', {
+                axios.get('http://localhost:3000/api/v1/users/current', {
                   headers: {
                     "Authorization": `Bearer ${this.state.user_token}`,
                     "Content-Type": `application/json`
@@ -69,7 +70,7 @@ export default class App extends React.Component {
   // If the user has a token, send the following request to get their info
     if (this.state.user_token){
       console.log('doing this')
-      axios.get('http://192.168.7.228:3000/api/v1/users/current', {
+      axios.get('http://localhost:3000/api/v1/users/current', {
         headers: {
           "Authorization": `Bearer ${this.state.user_token}`,
           "Content-Type": `application/json`
@@ -101,7 +102,7 @@ export default class App extends React.Component {
     // uncomment this if saved data gets deleted in order to set an initial value
     // AsyncStorage.setItem("myKey", hex)``
     let addedColor = this.state.colorArr.concat(hex)
-    console.log(addedColor)
+    // console.log(addedColor)
     this.setState({colorArr: addedColor})
     AsyncStorage.setItem("myKey", JSON.stringify(colorArr))
   }
@@ -140,7 +141,7 @@ export default class App extends React.Component {
   }
 
   handleSubmit = (email, password) => {
-    axios.post('http://192.168.7.228:3000/api/v1/user_token', {
+    axios.post('http://localhost:3000/api/v1/user_token', {
       auth: {
         "email": email,
         "password": password
@@ -151,7 +152,7 @@ export default class App extends React.Component {
         user_token: response.data.jwt
       });
 
-      axios.get('http://192.168.7.228:3000/api/v1/users/current', {
+      axios.get('http://localhost:3000/api/v1/users/current', {
         headers: {
           "Authorization": `Bearer ${this.state.user_token}`,
           "Content-Type": `application/json`
@@ -222,6 +223,12 @@ export default class App extends React.Component {
     );
   }
 
+  _renderLogPage = () => {
+    return (
+      <LoggedInPage user={this.state.user} handleLogOut={this.handleLogOut}/>
+    )
+  }
+
   startApp = () => {
     this.setState({ appStart: true });
   }
@@ -240,7 +247,7 @@ export default class App extends React.Component {
           />
       );
     }
-    else {
+    else if (!loggedIn){
       return (
         <React.Fragment>
         <TabIndex
@@ -249,6 +256,18 @@ export default class App extends React.Component {
           _renderColorPicker = {() => this._renderColorPicker()}
           _renderSavedColors = {() => this._renderSavedColors()}
           _renderMenu = {() => this._renderMenu()}
+          />
+      </React.Fragment>
+      );
+    } else {
+      return (
+        <React.Fragment>
+        <TabIndex
+          changeTabs = {(item) => this.changeTabs(item)}
+          selectedTab = {this.state.selectedTab}
+          _renderColorPicker = {() => this._renderColorPicker()}
+          _renderSavedColors = {() => this._renderSavedColors()}
+          _renderMenu = {() => this._renderLogPage()}
           />
       </React.Fragment>
       );
