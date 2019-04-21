@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  has_many :palettes
   # Necessary to authenticate.
   has_secure_password
 
