@@ -6,7 +6,7 @@ import SavedColors from './components/SavedColors';
 import Menu from './components/Menu';
 import { Font, AppLoading } from 'expo';
 import StartPage from './components/StartPage';
-import { AsyncStorage, NavigatorIOS } from 'react-native';
+import { AsyncStorage, NavigatorIOS, AlertIOS } from 'react-native';
 import LoggedInPage from './components/LoggedInPage';
 
 
@@ -179,6 +179,24 @@ export default class App extends React.Component {
     AsyncStorage.setItem("myToken", '')
   }
 
+  shareColors = () => {
+    const {user, colorArr} = this.state
+    let colors = colorArr.join('')
+    axios.post('http://localhost:3000/api/v1/palettes/create', {
+      headers: {
+        "Authorization": `Bearer ${this.state.user_token}`,
+        "Content-Type": `application/json`
+      },
+      data: {
+        user: user.email,
+        colors: colors
+      }
+    }).then(() => {
+      console.log('posted')
+      AlertIOS.alert('Palette Shared Successfully!');
+    })
+  }
+
   _renderColorPicker = () => {
     return(
         <ColorPicker
@@ -225,7 +243,7 @@ export default class App extends React.Component {
 
   _renderLogPage = () => {
     return (
-      <LoggedInPage user={this.state.user} handleLogOut={this.handleLogOut}/>
+      <LoggedInPage user={this.state.user} handleLogOut={this.handleLogOut} shareColors={this.shareColors}/>
     )
   }
 
