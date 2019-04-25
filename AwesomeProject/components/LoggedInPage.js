@@ -16,6 +16,11 @@ const LoggedInPage = props => {
           >
           <Text>Log Out</Text>
         </Button>
+        <Button
+          onPress={() => {props.shareColors()}}
+          >
+          <Text>Share Colors</Text>
+        </Button>
     </View>
   );
 }

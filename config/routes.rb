@@ -12,10 +12,13 @@ Rails.application.routes.draw do
 
       # User actions
       get    '/users'          => 'users#index'
+      get    '/users/:username'=> 'users#show'
       get    '/users/current'  => 'users#current'
       post   '/users/create'   => 'users#create'
       patch  '/user/:id'       => 'users#update'
       delete '/user/:id'       => 'users#destroy'
+
+      post   '/palettes/create'   => 'palettes#create'
     end
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

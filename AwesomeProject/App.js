@@ -179,6 +179,21 @@ export default class App extends React.Component {
     AsyncStorage.setItem("myToken", '')
   }
 
+  shareColors = () => {
+    const {user, colorArr} = this.state
+    let colors = colorArr.join('')
+    axios.post('http://localhost:3000/api/v1/palettes/create', {
+      headers: {
+        "Authorization": `Bearer ${this.state.user_token}`,
+        "Content-Type": `application/json`
+      },
+      data: {
+        user: user.email,
+        colors: colors
+      }
+    }).then(() => console.log('posted'))
+  }
+
   _renderColorPicker = () => {
     return(
         <ColorPicker
@@ -225,7 +240,7 @@ export default class App extends React.Component {
 
   _renderLogPage = () => {
     return (
-      <LoggedInPage user={this.state.user} handleLogOut={this.handleLogOut}/>
+      <LoggedInPage user={this.state.user} handleLogOut={this.handleLogOut} shareColors={this.shareColors}/>
     )
   }
 
