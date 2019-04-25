@@ -6,7 +6,7 @@ import SavedColors from './components/SavedColors';
 import Menu from './components/Menu';
 import { Font, AppLoading } from 'expo';
 import StartPage from './components/StartPage';
-import { AsyncStorage, NavigatorIOS } from 'react-native';
+import { AsyncStorage, NavigatorIOS, AlertIOS } from 'react-native';
 import LoggedInPage from './components/LoggedInPage';
 
 
@@ -191,7 +191,10 @@ export default class App extends React.Component {
         user: user.email,
         colors: colors
       }
-    }).then(() => console.log('posted'))
+    }).then(() => {
+      console.log('posted')
+      AlertIOS.alert('Palette Shared Successfully!');
+    })
   }
 
   _renderColorPicker = () => {

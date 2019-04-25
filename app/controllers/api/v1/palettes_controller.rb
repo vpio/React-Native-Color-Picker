@@ -8,5 +8,10 @@ module Api::V1
       user.palettes.create(colors: data[:colors])
     end
 
+    def show
+      user = User.find_by(username: params[:username])
+      render json: user.palettes
+    end
+
   end
 end

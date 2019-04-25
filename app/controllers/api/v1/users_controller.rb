@@ -17,11 +17,6 @@ module Api::V1
       render json: current_user
     end
 
-    def show
-      user = User.find_by(username: params[:username])
-      render json: user.palettes
-    end
-
     # Method to create a new user using the safe params we setup.
     def create
       user = User.new(user_params)
