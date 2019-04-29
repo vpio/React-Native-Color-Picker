@@ -6,7 +6,7 @@ import SavedColors from './components/SavedColors';
 import Menu from './components/Menu';
 import { Font, AppLoading } from 'expo';
 import StartPage from './components/StartPage';
-import { AsyncStorage, NavigatorIOS, AlertIOS } from 'react-native';
+import { AsyncStorage, NavigatorIOS, AlertIOS, Alert } from 'react-native';
 import LoggedInPage from './components/LoggedInPage';
 
 
@@ -123,6 +123,23 @@ export default class App extends React.Component {
   }
 
   deleteAll = () => {
+    Alert.alert(
+      'Are you sure you want to delete your palette?',
+      `This action can't be undone!`,
+      [
+        {text: 'Yes', onPress: () => this.actualDelete() },
+        {text: 'Share', onPress: () => this.setState({selectedTab: 'tab3'})},
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        }
+      ],
+      {cancelable: false},
+    );
+  }
+
+  actualDelete = () => {
     this.setState({colorArr: [], selectedTab: 'tab1', hex: '#ffffff'});
     AsyncStorage.setItem("myKey", '')
   }
