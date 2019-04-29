@@ -50,7 +50,7 @@ export default class App extends React.Component {
                  user_token: value,
                  loggedIn: true
                 })
-                axios.get('http://localhost:3000/api/v1/users/current', {
+                axios.get('https://color-picker-mobile.herokuapp.com/api/v1/users/current', {
                   headers: {
                     "Authorization": `Bearer ${this.state.user_token}`,
                     "Content-Type": `application/json`
@@ -70,7 +70,7 @@ export default class App extends React.Component {
   // If the user has a token, send the following request to get their info
     if (this.state.user_token){
       console.log('doing this')
-      axios.get('http://localhost:3000/api/v1/users/current', {
+      axios.get('https://color-picker-mobile.herokuapp.com/api/v1/users/current', {
         headers: {
           "Authorization": `Bearer ${this.state.user_token}`,
           "Content-Type": `application/json`
@@ -141,7 +141,7 @@ export default class App extends React.Component {
   }
 
   handleSubmit = (email, password) => {
-    axios.post('http://localhost:3000/api/v1/user_token', {
+    axios.post('https://color-picker-mobile.herokuapp.com/api/v1/user_token', {
       auth: {
         "email": email,
         "password": password
@@ -152,7 +152,7 @@ export default class App extends React.Component {
         user_token: response.data.jwt
       });
 
-      axios.get('http://localhost:3000/api/v1/users/current', {
+      axios.get('https://color-picker-mobile.herokuapp.com/api/v1/users/current', {
         headers: {
           "Authorization": `Bearer ${this.state.user_token}`,
           "Content-Type": `application/json`
@@ -182,7 +182,7 @@ export default class App extends React.Component {
   shareColors = () => {
     const {user, colorArr} = this.state
     let colors = colorArr.join('')
-    axios.post('http://localhost:3000/api/v1/palettes/create', {
+    axios.post('https://color-picker-mobile.herokuapp.com/api/v1/palettes/create', {
       headers: {
         "Authorization": `Bearer ${this.state.user_token}`,
         "Content-Type": `application/json`

@@ -14,7 +14,7 @@ class CreateAcc extends Component{
     const {email, password, userName} = this.state
     // console.log(email, password, userName)
 
-    axios.post('http://localhost:3000/api/v1/users/create', {
+    axios.post('https://color-picker-mobile.herokuapp.com/api/v1/users/create', {
       user: {
         email: email,
         password: password,
