@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
   },
   center2: {
     flex: 1,
+    marginTop: 350,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -42,6 +43,10 @@ class SavedColors extends React.Component {
     edit: true
   }
 
+  deleteAll = () => {
+    this.props.deleteAll();
+  }
+
   render() {
     const colorOptions =
     <TouchableHighlight
@@ -56,6 +61,7 @@ class SavedColors extends React.Component {
           stickyHeaderIndices={[0]}
           contentContainerStyle={styles.ContentContainer}
           >
+          <Button title={'New'} onPress={() => {this.deleteAll()}}/>
           <ColorFilter />
           {
             sortColors(this.props.savedColors).map((color, i) => {
@@ -88,9 +94,14 @@ class SavedColors extends React.Component {
     )}
     else {
       return (
-        <View style={styles.center2}>
-          <Title styleName="line-through" >Aint no colors here</Title>
-        </View>
+        <ScrollView
+          stickyHeaderIndices={[0]}
+          contentContainerStyle={styles.ContentContainer}
+          >
+          <View style={styles.center2}>
+            <Title styleName="line-through" >Aint no colors here</Title>
+          </View>
+        </ScrollView>
       )
     }
   }

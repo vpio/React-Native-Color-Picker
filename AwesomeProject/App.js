@@ -122,6 +122,11 @@ export default class App extends React.Component {
     this.setState({colorArr})
   }
 
+  deleteAll = () => {
+    this.setState({colorArr: [], selectedTab: 'tab1', hex: '#ffffff'});
+    AsyncStorage.setItem("myKey", '')
+  }
+
   showColor = () => {
     AsyncStorage.getItem("myKey").then((value) =>
            JSON.parse(value))
@@ -215,6 +220,7 @@ export default class App extends React.Component {
       <SavedColors
         savedColors = {this.state.colorArr}
         deleteColor = {this.deleteColor}
+        deleteAll = {this.deleteAll}
         />
     );
   }
