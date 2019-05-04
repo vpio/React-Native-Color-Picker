@@ -7,7 +7,7 @@ class ColorFilter extends Component {
     this.state = {
       filters: [
         {
-          brand: "List View",
+          filterStyle: "List View",
           models:
             {
               model: "Audi R8",
@@ -15,7 +15,7 @@ class ColorFilter extends Component {
             }
         },
         {
-          brand: "Squares",
+          filterStyle: "Squares",
           models: {
             model: "Chiron",
             image: {
@@ -24,18 +24,7 @@ class ColorFilter extends Component {
             description: "Bugatti premiered the Bugatti "
               + "Chiron as a successor to the Veyron."
           }
-        },
-        {
-          brand: "Palette",
-          models: {
-            model: "Dodge Viper",
-            image: {
-              url: "https://shoutem.github.io/img/ui-toolkit/dropdownmenu/Dodge-Viper.jpg"
-            },
-            description: "The Dodge Viper is a super car "
-              + "manufactured by Dodge (SRT for 2013 and 2014)."
-          }
-        },
+        }
       ],
     }
   }
@@ -49,8 +38,12 @@ class ColorFilter extends Component {
           styleName="horizontal"
           options={this.state.filters}
           selectedOption={selectedFilter ? selectedFilter : this.state.filters[0]}
-          onOptionSelected={(car) => this.setState({ selectedFilter: car })}
-          titleProperty="brand"
+          onOptionSelected={(car) => {
+            console.log('option selected')
+            this.props.changeView(car)
+            this.setState({ selectedFilter: car })
+          }}
+          titleProperty="filterStyle"
           valueProperty="filters.model"
         />
       </Screen>

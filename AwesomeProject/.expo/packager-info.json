@@ -1,9 +1,9 @@
 {
-  "expoServerPort": 19000,
+  "expoServerPort": null,
   "expoServerNgrokUrl": "https://kp-x44.vpio93.awesomeproject.exp.direct",
   "packagerNgrokUrl": "https://packager.kp-x44.vpio93.awesomeproject.exp.direct",
-  "ngrokPid": 51423,
+  "ngrokPid": 70193,
   "devToolsPort": 19002,
-  "packagerPort": 19001,
-  "packagerPid": 51395
+  "packagerPort": null,
+  "packagerPid": null
 }
