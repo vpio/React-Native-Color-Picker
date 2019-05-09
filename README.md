@@ -1,24 +1,9 @@
-# README
+# Color Picker App
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+* Randomly generate colors and save the ones you like.
 
-Things you may want to cover:
+* Saved colors can be viewed in list form or grid form.
 
-* Ruby version
+* Create an account and share your colors to allow others to view them publicly (colors can be searched by user at http://piomolina.com/colorpicker )
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* This application is currently in the process of being tested for distribution in the Apple app store.
