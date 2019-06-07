@@ -253,7 +253,6 @@ export default class App extends React.Component {
           ],
           {cancelable: false},
         )
-       console.log(e) })
     })
   }
 
