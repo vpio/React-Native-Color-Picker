@@ -60,7 +60,7 @@ class SavedColors extends React.Component {
   changeView = (car) => {
     console.log('this car', car);
     this.setState({view: car.filterStyle})
-    console.log('view changd to squares');
+    console.log('view changed to squares');
   }
 
   render() {

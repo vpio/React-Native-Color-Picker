@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
+import { Alert, StyleSheet, ScrollView } from 'react-native';
 import axios from 'axios';
 import { View, Examples, ImageBackground, Screen, Tile, Overlay, Title, Caption, Button, Text, TextInput } from '@shoutem/ui';
 
@@ -7,7 +7,8 @@ class CreateAcc extends Component{
   state = {
     email: "",
     password: "",
-    userName: ""
+    userName: "",
+    valid: null
   }
 
   handleSubmit = () => {
@@ -27,12 +28,29 @@ class CreateAcc extends Component{
      console.log(response);
    })
    .catch((error) => {
+     Alert.alert(
+       'Something Went Wrong',
+       `Please check your info and try again`,
+       [
+         {
+           text: 'Okay',
+           style: 'cancel',
+         }
+       ],
+       {cancelable: false},
+     );
      console.log(error);
    });
   }
 
+  validatePassword = (password) => {
+    if (password.length >= 8) {
+      this.setState( {valid: true} )
+    } else { this.setState( {valid: false})}
+  }
+
   render(){
-    const {email, password, userName} = this.state
+    const {email, password, userName, valid} = this.state
     return (
       <ScrollView
         style = {styles.container}
@@ -59,8 +77,12 @@ class CreateAcc extends Component{
           autoCapitalize={'none'}
           secureTextEntry={true}
           textContentType={'password'}
-          onChangeText={(password) => this.setState({password})}
+          onChangeText={(password) => {
+            this.setState({password})
+            this.validatePassword(password)
+          }}
           value={password}/>
+        <Caption styleName={'sm-gutter'} style={!valid || styles.good}>Must Contain 8+ characters</Caption>
         <Button
           onPress={() => {this.handleSubmit()}}
           >
@@ -87,7 +109,8 @@ const styles = StyleSheet.create({
   formContainer: {
     width: 300,
     alignSelf: 'center'
-  }
+  },
+  good: { color: 'green'}
 });
 
 export default CreateAcc;

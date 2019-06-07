@@ -6,7 +6,7 @@ import SavedColors from './components/SavedColors';
 import Menu from './components/Menu';
 import { Font, AppLoading } from 'expo';
 import StartPage from './components/StartPage';
-import { AsyncStorage, NavigatorIOS, AlertIOS, Alert } from 'react-native';
+import { AsyncStorage, NavigatorIOS, AlertIOS, Alert, Linking } from 'react-native';
 import LoggedInPage from './components/LoggedInPage';
 
 
@@ -187,9 +187,23 @@ export default class App extends React.Component {
         })
         AsyncStorage.setItem("myToken", this.state.user_token)
       })
-      .catch((e) => { console.log(e.message) } )
+      .catch((e) => {
+        console.log(e.message)
+      } )
     })
-    .catch((e) => { console.log(e) })
+    .catch((e) => {
+      Alert.alert(
+          'Something Went Wrong',
+          `Please check your info and try again`,
+          [
+            {
+              text: 'Okay',
+              style: 'cancel',
+            }
+          ],
+          {cancelable: false},
+        )
+       console.log(e) })
   }
 
   handleLogOut = () => {
@@ -215,7 +229,18 @@ export default class App extends React.Component {
       }
     }).then(() => {
       console.log('posted')
-      AlertIOS.alert('Palette Shared Successfully!');
+      Alert.alert(
+        'Palette Shared Successfully!',
+        `Visit piomolina.com/colorpicker to view your palette`,
+        [
+          {text: 'Visit', onPress: () => Linking.openURL('http://piomolina.com/colorpicker')},
+          {
+            text: 'Okay',
+            style: 'cancel',
+          }
+        ],
+        {cancelable: false},
+      );;
     })
   }
 

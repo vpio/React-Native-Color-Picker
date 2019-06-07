@@ -1,18 +1,17 @@
 {
   "expo": {
-    "name": "Color Picker",
+    "name": "Ultimate Color Picker",
     "slug": "colorpicker",
     "privacy": "public",
     "sdkVersion": "31.0.0",
     "platforms": [
-      "ios",
-      "android"
+      "ios"
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/images/colorpicker.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/images/rainbow7.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -23,7 +22,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.piomolina.colorpicker"
     },
     "description": "",
     "githubUrl": "https://github.com/vpio/React-Native-Color-Picker"
