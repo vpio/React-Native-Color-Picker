@@ -241,6 +241,19 @@ export default class App extends React.Component {
         ],
         {cancelable: false},
       );;
+    }).catch(() => {
+      Alert.alert(
+          'Something Went Wrong',
+          `Please try again later`,
+          [
+            {
+              text: 'Okay',
+              style: 'cancel',
+            }
+          ],
+          {cancelable: false},
+        )
+       console.log(e) })
     })
   }
 
