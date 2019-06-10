@@ -22,7 +22,7 @@ class StartPage extends React.Component {
       this.state.fadeAnim,
       {
         toValue: 1,
-        duration: 800,           
+        duration: 800,
       }
     ).start();
   }
@@ -36,9 +36,9 @@ class StartPage extends React.Component {
     return(
       <View>
         <ImageBackground
-          styleName="featured"
-          source={ require('../assets/images/6320.jpg') }
-          style={{marginTop: 200}}
+          styleName="large-portrait"
+          source={ require('../assets/images/rainbow7.png') }
+          style={{marginTop: 147}}
           >
           <Animated.View
             style={styles.container, [
