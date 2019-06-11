@@ -6,6 +6,7 @@ import CreateAcc from './CreateAcc.js';
 import axios from 'axios';
 import { View, Examples, ImageBackground, Screen, Tile, Overlay, Title, Caption, Button, Text } from '@shoutem/ui';
 import { Font, AppLoading, Haptic } from 'expo';
+import AboutPio from './AboutPio.js';
 
 YellowBox.ignoreWarnings([
   'Require cycle:',
@@ -70,6 +71,14 @@ class Menu extends React.Component {
         login: this.props.login
        }
     };
+    const aboutPio = {
+      component: AboutPio,
+      title: 'About',
+      passProps: {
+        userName: this.props.user.username,
+        login: this.props.login
+       }
+    };
 
 
     if (!this.state.fontsAreLoaded) {
@@ -89,6 +98,7 @@ class Menu extends React.Component {
       );
     }
     return (
+
       <View style={styles.container}>
         <Button
           onPress={() => {
@@ -105,6 +115,14 @@ class Menu extends React.Component {
           }}
           >
           <Text>Sign Up</Text>
+        </Button>
+        <Button
+          onPress={() => {
+            this._handleNextPress(aboutPio)
+            Haptic.impact(Haptic.ImpactFeedbackStyle.Heavy);
+          }}
+          >
+          <Text>About</Text>
         </Button>
       </View>
     );

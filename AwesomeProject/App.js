@@ -4,7 +4,7 @@ import TabIndex from './components/TabIndex';
 import ColorPicker from './components/ColorPicker';
 import SavedColors from './components/SavedColors';
 import Menu from './components/Menu';
-import { Font, AppLoading } from 'expo';
+import { Font, AppLoading, Asset } from 'expo';
 import StartPage from './components/StartPage';
 import { AsyncStorage, NavigatorIOS, AlertIOS, Alert, Linking } from 'react-native';
 import LoggedInPage from './components/LoggedInPage';
@@ -40,6 +40,10 @@ export default class App extends React.Component {
       'Rubik-Regular': require('./node_modules/@shoutem/ui/fonts/Rubik-Regular.ttf'),
       'rubicon-icon-font': require('./node_modules/@shoutem/ui/fonts/rubicon-icon-font.ttf'),
     });
+
+    await Asset.fromModule(require('./assets/images/Pio_HQ_Headshot2.jpg')).downloadAsync();
+    await Asset.fromModule(require('./assets/images/rainbow7.png')).downloadAsync();
+    await Asset.fromModule(require('./assets/images/signature.png')).downloadAsync();
 
     this.setState({ fontsAreLoaded: true });
 
