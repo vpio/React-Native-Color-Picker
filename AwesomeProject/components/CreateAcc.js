@@ -14,33 +14,46 @@ class CreateAcc extends Component{
   handleSubmit = () => {
     const {email, password, userName} = this.state
     // console.log(email, password, userName)
-
-    axios.post('https://color-picker-mobile.herokuapp.com/api/v1/users/create', {
-      user: {
-        email: email,
-        password: password,
-        username: userName
-      }
-    })
-    .then((response) => {
-     this.props.login(email, password)
-     this.props.navigator.popToTop();
-     console.log(response);
-   })
-   .catch((error) => {
+    if (email.includes('@') && (password.length >= 8)){
+      axios.post('https://color-picker-mobile.herokuapp.com/api/v1/users/create', {
+        user: {
+          email: email,
+          password: password,
+          username: userName
+        }
+      })
+      .then((response) => {
+       this.props.login(email, password)
+       this.props.navigator.popToTop();
+       console.log(response);
+     })
+     .catch((error) => {
+       Alert.alert(
+         'Something Went Wrong',
+         `Please check your info and try again`,
+         [
+           {
+             text: 'Okay',
+             style: 'cancel',
+           }
+         ],
+         {cancelable: false},
+       );
+       console.log(error);
+     });
+   } else {
      Alert.alert(
-       'Something Went Wrong',
-       `Please check your info and try again`,
+       'Please enter a valid Email and Password',
+       '',
        [
          {
            text: 'Okay',
            style: 'cancel',
-         }
+         },
        ],
        {cancelable: false},
      );
-     console.log(error);
-   });
+   }
   }
 
   validatePassword = (password) => {
@@ -59,12 +72,14 @@ class CreateAcc extends Component{
         >
         <Text>Username:</Text>
         <TextInput
+          returnKeyType={'done'}
           style={{borderColor: 'gray', borderBottomWidth: 1}}
           autoCapitalize={'none'}
           onChangeText={(userName) => this.setState({userName})}
           value={userName}/>
         <Text>Email:</Text>
         <TextInput
+          returnKeyType={'done'}
           style={{borderColor: 'gray', borderBottomWidth: 1}}
           autoCapitalize={'none'}
           keyboardType={'email-address'}
@@ -73,6 +88,7 @@ class CreateAcc extends Component{
           value={email}/>
         <Text>Password:</Text>
         <TextInput
+          returnKeyType={'done'}
           style={{borderColor: 'gray', borderBottomWidth: 1}}
           autoCapitalize={'none'}
           secureTextEntry={true}

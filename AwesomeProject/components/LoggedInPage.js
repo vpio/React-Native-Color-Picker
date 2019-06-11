@@ -8,21 +8,30 @@ import { View, Examples, ImageBackground, Screen, Tile, Overlay, Title, Caption,
 import { Font, AppLoading, Haptic } from 'expo';
 
 const LoggedInPage = props => {
-  return(
-    <View style={styles.container}>
-      <Text>{`You are currently Logged-in as ${props.user.username}`}</Text>
-        <Button
-          onPress={() => {props.handleLogOut()}}
-          >
-          <Text>Log Out</Text>
-        </Button>
-        <Button
-          onPress={() => {props.shareColors()}}
-          >
-          <Text>Share Colors</Text>
-        </Button>
-    </View>
-  );
+
+  if (!props.user.username) {
+    return (
+      <View style={styles.container}>
+        <Text>{`Attempting to Log In...`}</Text>
+      </View>
+    )
+  } else {
+    return(
+      <View style={styles.container}>
+        <Text>{`You are currently Logged-in as ${props.user.username}`}</Text>
+          <Button
+            onPress={() => {props.handleLogOut()}}
+            >
+            <Text>Log Out</Text>
+          </Button>
+          <Button
+            onPress={() => {props.shareColors()}}
+            >
+            <Text>Share Colors</Text>
+          </Button>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
