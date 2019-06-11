@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {  StyleSheet, ScrollView } from 'react-native';
+import {  StyleSheet, ScrollView, Alert } from 'react-native';
 import { Button, Text, TextInput } from '@shoutem/ui';
 
 class LoginMenu extends Component{
@@ -11,10 +11,25 @@ class LoginMenu extends Component{
 
   handleSubmit = () => {
     const {email, password} = this.state
+    if (email.includes('@') && password){
+      this.props.login(email, password);
+      this.props.navigator.pop();
+    } else {
+      Alert.alert(
+        'Invalid Email or Password',
+        `Please check your login info and try again`,
+        [
+          {
+            text: 'Okay',
+            onPress: () => this.setState({email: '', password:''}),
+            style: 'cancel',
+          }
+        ],
+        {cancelable: false},
+      );
+    }
 
-    console.log(email, password)
-    this.props.login(email, password)
-    this.props.navigator.pop();
+
   }
 
   render(){
@@ -27,12 +42,14 @@ class LoginMenu extends Component{
            >
           <Text>Email:</Text>
           <TextInput
+            returnKeyType={'done'}
             style={{borderColor: 'gray', borderBottomWidth: 1}}
             autoCapitalize={'none'}
             onChangeText={(email) => this.setState({email})}
             value={email}/>
           <Text>Password:</Text>
           <TextInput
+            returnKeyType={'done'}
             style={{borderColor: 'gray', borderBottomWidth: 1}}
             autoCapitalize={'none'}
             secureTextEntry={true}
